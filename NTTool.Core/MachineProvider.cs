@@ -1,13 +1,9 @@
-﻿using NTTool.Models;
+﻿using Microsoft.Win32;
+using NTTool.Models;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
-using System.DirectoryServices.ActiveDirectory;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Security;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,60 +11,54 @@ namespace NTTool.Core
 {
     public class MachineProvider
     {
-
-        public static List<string> EnumerateDomains()
+        public static List<SoftwareEntity> GetListOfInstalledSoftwares(string machineName)
         {
-            List<string> alDomains = new List<string>();
-
+            List<SoftwareEntity> programs = null;
+            string softwareRegLoc = @"Software\Microsoft\Windows\CurrentVersion\Uninstall";
             try
             {
+                // Open Remote Machine Registry Key 
+                RegistryKey remoteKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, machineName);
 
+                RegistryKey regKey = remoteKey.OpenSubKey(softwareRegLoc);
 
-                Forest currentForest = Forest.GetCurrentForest();
-                DomainCollection myDomains = currentForest.Domains;
+                // Open Registry Sub Key
+                RegistryKey subKey;
 
-                foreach (Domain objDomain in myDomains)
+                // Read Value from Registry Sub Key
+                string softwareName;
+                string displayVersion;
+                string opratingSystem;
+
+                programs = new List<SoftwareEntity>();
+
+                foreach (string subKeyName in regKey.GetSubKeyNames())
                 {
-                    alDomains.Add(objDomain.Name);
+                    // Open Registry Sub Key
+                    subKey = regKey.OpenSubKey(subKeyName);
+
+                    // Read Value from Registry Sub Key
+                    softwareName = (string)subKey.GetValue("DisplayName");
+                    displayVersion = (string)subKey.GetValue("DisplayVersion");
+
+                    if (!string.IsNullOrEmpty(softwareName))
+                    {
+                        programs.Add(new SoftwareEntity { DisplayName = softwareName, DisplayVersion = displayVersion });
+                    }
                 }
-                return alDomains;
             }
-            catch
+            catch (System.Security.SecurityException) {
+                programs = null;
+            }
+            catch (System.IO.IOException)
             {
-
-                throw;
+                programs = null;
             }
-        }
-
-        public static List<MachineEntity> NetworkComputers(string domainName)
-        {
-            List<MachineEntity> ComputerNames = new List<MachineEntity>();
-
-            try
+            catch (Exception)
             {
-
-
-                DirectoryEntry entry = new DirectoryEntry("LDAP://" + domainName);
-                DirectorySearcher mySearcher = new DirectorySearcher(entry);
-                mySearcher.Filter = ("(objectClass=computer)");
-                mySearcher.SizeLimit = int.MaxValue;
-                mySearcher.PageSize = int.MaxValue;
-
-                foreach (SearchResult resEnt in mySearcher.FindAll())
-                {
-                    var ComputerName = resEnt.GetDirectoryEntry();
-                    ComputerNames.Add(new MachineEntity { MachineName = ComputerName.Name.Replace("CN=", ""), MachineAdInfo = ComputerName });
-                }
-
-                mySearcher.Dispose();
-                entry.Dispose();
-                return ComputerNames;
+                programs = null;
             }
-            catch
-            {
-
-                throw;
-            }
+            return programs;
         }
     }
 }

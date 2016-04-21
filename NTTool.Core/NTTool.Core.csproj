@@ -41,11 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MachineProvider.cs" />
+    <Compile Include="NetworkProvider.cs" />
     <Compile Include="Models\MachineEntity.cs" />
     <Compile Include="Models\SoftwareEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoftwareProvider.cs" />
+    <Compile Include="MachineProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
