@@ -28,8 +28,7 @@ namespace NTTool.Core
                 // Read Value from Registry Sub Key
                 string softwareName;
                 string displayVersion;
-                string opratingSystem;
-
+               
                 programs = new List<SoftwareEntity>();
 
                 foreach (string subKeyName in regKey.GetSubKeyNames())
@@ -47,16 +46,10 @@ namespace NTTool.Core
                     }
                 }
             }
-            catch (System.Security.SecurityException) {
-                programs = null;
-            }
-            catch (System.IO.IOException)
-            {
-                programs = null;
-            }
+          
             catch (Exception)
             {
-                programs = null;
+                throw;
             }
             return programs;
         }

@@ -21,16 +21,24 @@ namespace Dashboard
 
         private void btnList_Click(object sender, EventArgs e)
         {
-            var domains= NetworkProvider.EnumerateDomains();
+            pgInfo.Maximum = 100;
+            pgInfo.Minimum = 1;
+            pgInfo.Value = 10;
+        
+            try
+            {
+                FillListOfMachines();
+                pgInfo.Value = 100;
+            }
+            catch (Exception ex)
+            {
 
-            var listOfMachines = NetworkProvider.DomainNetworkComputers(domains.FirstOrDefault());
+                MessageBox.Show(ex.Message);
+            }
 
-            lstView.DataSource = listOfMachines;
-            lstView.DisplayMember = "MachineName";
-            lblInfo.Text = string.Format("Total no of machines is {0}", listOfMachines.Count);
         }
 
-       
+
 
         private void GetListofSofwares()
         {
@@ -44,9 +52,50 @@ namespace Dashboard
 
         private void lslSoftware_Click(object sender, EventArgs e)
         {
-            GetListofSofwares();
+            try
+            {
+                GetListofSofwares();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
         }
 
-       
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+
+            if (txtFilter.Text.Trim() != "")
+            {
+                FillListOfMachines(txtFilter.Text);
+            }
+            else
+            {
+                MessageBox.Show("Please enter machine name");
+            }
+        }
+
+        private void FillListOfMachines(string searchString = null)
+        {
+            lstView.DataSource = null;
+            lslSoftware.DataSource = null;
+            lblSoftware.Text = "";
+            lblInfo.Text = "";
+
+            var domains = NetworkProvider.EnumerateDomains();
+            var listOfMachines = NetworkProvider.DomainNetworkComputers(domains.FirstOrDefault());
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                listOfMachines = listOfMachines.Where(x => x.MachineName.Contains(txtFilter.Text)).ToList();
+            }
+            lstView.DataSource = null;
+            lstView.DataSource = listOfMachines;
+
+            lstView.DisplayMember = "MachineName";
+            lblInfo.Text = string.Format("Total no of machines is {0}", listOfMachines.Count);
+        }
+
+
     }
 }
