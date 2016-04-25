@@ -44,7 +44,7 @@ namespace Dashboard
         {
             var obj = (MachineEntity)lstView.SelectedItem;
 
-            var listOfSoftwares = MachineProvider.GetListOfInstalledSoftwares(obj.MachineName);
+            var listOfSoftwares = MachineProvider.GetInstance().GetListOfInstalledSoftwares(obj.MachineName);
             lslSoftware.DataSource = listOfSoftwares;
             lslSoftware.DisplayMember = "DisplayName";
             lblSoftware.Text = string.Format("Total no of machines is {0}", listOfSoftwares == null ? 0 : listOfSoftwares.Count);
@@ -83,8 +83,8 @@ namespace Dashboard
             lblSoftware.Text = "";
             lblInfo.Text = "";
 
-            var domains = NetworkProvider.EnumerateDomains();
-            var listOfMachines = NetworkProvider.DomainNetworkComputers(domains.FirstOrDefault());
+            var domains = NetworkProvider.GetInstance().EnumerateDomains();
+            var listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(domains.FirstOrDefault());
             if (!string.IsNullOrEmpty(searchString))
             {
                 listOfMachines = listOfMachines.Where(x => x.MachineName.Contains(txtFilter.Text)).ToList();

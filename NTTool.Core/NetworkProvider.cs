@@ -14,10 +14,11 @@ using System.Threading.Tasks;
 
 namespace NTTool.Core
 {
-    public class NetworkProvider
+    public class NetworkProvider : INetworkProvider
     {
+        private static INetworkProvider obj;
 
-        public static List<string> EnumerateDomains()
+        public List<string> EnumerateDomains()
         {
             List<string> alDomains = new List<string>();
 
@@ -41,7 +42,7 @@ namespace NTTool.Core
             }
         }
 
-        public static List<MachineEntity> DomainNetworkComputers(string domainName)
+        public List<MachineEntity> DomainNetworkComputers(string domainName)
         {
             List<MachineEntity> ComputerNames = new List<MachineEntity>();
 
@@ -54,15 +55,15 @@ namespace NTTool.Core
                 mySearcher.Filter = ("(objectClass=computer)");
                 mySearcher.SizeLimit = int.MaxValue;
                 mySearcher.PageSize = int.MaxValue;
-                MachineEntity objMachine=null;
+                MachineEntity objMachine = null;
                 DirectoryEntry machineAdInfo;
                 foreach (SearchResult resEnt in mySearcher.FindAll())
                 {
-                    objMachine=new MachineEntity();
-                    
+                    objMachine = new MachineEntity();
+
                     machineAdInfo = resEnt.GetDirectoryEntry();
 
-                    ComputerNames.Add(new MachineEntity { MachineName = machineAdInfo.Name.Replace("CN=", ""), MachineAdInfo = machineAdInfo, DomainName=domainName });
+                    ComputerNames.Add(new MachineEntity { MachineName = machineAdInfo.Name.Replace("CN=", ""), MachineAdInfo = machineAdInfo, DomainName = domainName });
                 }
 
                 mySearcher.Dispose();
@@ -76,7 +77,7 @@ namespace NTTool.Core
             }
         }
 
-        public static MachineEntity GetMachineInformation(string machine, string domain, MachineEntity objMachine)
+        public MachineEntity GetMachineInformation(string machine, string domain, MachineEntity objMachine)
         {
 
             ManagementScope scope = new ManagementScope();
@@ -99,11 +100,11 @@ namespace NTTool.Core
                     foreach (ManagementObject m in queryCollection)
                     {
 
-                       objMachine.MachineName = m["csname"].ToString();
-                       objMachine.OpratingSystem = m["Caption"].ToString();
-                       objMachine.OpratingSystemVersion = m["Version"].ToString();
-                       objMachine.SystemDirectory = m["WindowsDirectory"].ToString();
-                       objMachine.Manufacturer = m["Manufacturer"].ToString();
+                        objMachine.MachineName = m["csname"].ToString();
+                        objMachine.OpratingSystem = m["Caption"].ToString();
+                        objMachine.OpratingSystemVersion = m["Version"].ToString();
+                        objMachine.SystemDirectory = m["WindowsDirectory"].ToString();
+                        objMachine.Manufacturer = m["Manufacturer"].ToString();
 
                     }
 
@@ -118,6 +119,15 @@ namespace NTTool.Core
             }
 
             return objMachine;
+        }
+
+        public static INetworkProvider GetInstance()
+        {
+            if(obj==null)
+            {
+                obj = new NetworkProvider();
+            }
+            return obj;            
         }
     }
 }

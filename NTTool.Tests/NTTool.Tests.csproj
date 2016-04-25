@@ -113,14 +113,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NTTool.Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NTTool.Core\NTTool.Core.csproj">
+      <Project>{31ae0415-5b3f-4abe-a26e-03b981240dc3}</Project>
+      <Name>NTTool.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

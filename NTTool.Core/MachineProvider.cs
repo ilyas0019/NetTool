@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 
 namespace NTTool.Core
 {
-    public class MachineProvider
+    public class MachineProvider : IMachineProvider
     {
-        public static List<SoftwareEntity> GetListOfInstalledSoftwares(string machineName)
+        private static IMachineProvider obj;
+
+        public List<SoftwareEntity> GetListOfInstalledSoftwares(string machineName)
         {
             List<SoftwareEntity> programs = null;
             string softwareRegLoc = @"Software\Microsoft\Windows\CurrentVersion\Uninstall";
@@ -28,7 +30,7 @@ namespace NTTool.Core
                 // Read Value from Registry Sub Key
                 string softwareName;
                 string displayVersion;
-               
+
                 programs = new List<SoftwareEntity>();
 
                 foreach (string subKeyName in regKey.GetSubKeyNames())
@@ -46,12 +48,21 @@ namespace NTTool.Core
                     }
                 }
             }
-          
+
             catch (Exception)
             {
                 throw;
             }
             return programs;
+        }
+
+        public static IMachineProvider GetInstance()
+        {
+            if (obj == null)
+            {
+                obj = new MachineProvider();
+            }
+            return obj;
         }
     }
 }

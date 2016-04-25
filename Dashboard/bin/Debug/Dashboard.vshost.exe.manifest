@@ -49,19 +49,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>saM227ZW7ZSF5NnqmjHGHSUf0X3Wo2pd+p6Gxeig8To=</dsig:DigestValue>
+        <dsig:DigestValue>oOwvcpQ8XKAGnaDBF1gL7JMgjC4tpUHfGMsFNn0beS0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NTTool.Core.dll" size="12800">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NTTool.Core.dll" size="13312">
       <assemblyIdentity name="NTTool.Core" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>tS7k1RjitVPUG0dKxDLl5eQrUTR6qz7LgpvzqtfFEeM=</dsig:DigestValue>
+        <dsig:DigestValue>/8UhcIFUUO12x+WkJQukK03DfPps3peXbvC5H7dtbIY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

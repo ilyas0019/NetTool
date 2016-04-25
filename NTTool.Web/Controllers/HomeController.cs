@@ -17,17 +17,17 @@ namespace NTTool.Controllers
 
         public ActionResult Scan()
         {
-            var domain = NetworkProvider.EnumerateDomains();
-            var machines = NetworkProvider.DomainNetworkComputers(domain.FirstOrDefault());
+            var domain = NetworkProvider.GetInstance().EnumerateDomains();
+            var machines = NetworkProvider.GetInstance().DomainNetworkComputers(domain.FirstOrDefault());
             return View(machines);
         }
 
         public ActionResult Details(MachineEntity obj)
         {
             ViewBag.MachineName = obj.MachineName;
-            var listOfSoftwares = MachineProvider.GetListOfInstalledSoftwares(obj.MachineName);
+            var listOfSoftwares = MachineProvider.GetInstance().GetListOfInstalledSoftwares(obj.MachineName);
 
-            obj = NetworkProvider.GetMachineInformation(obj.MachineName, obj.DomainName, obj);
+            obj = NetworkProvider.GetInstance().GetMachineInformation(obj.MachineName, obj.DomainName, obj);
 
             return View(new ViewModel { MachineInfo=obj,SoftwareList=listOfSoftwares });
         }
