@@ -27,7 +27,7 @@ namespace NTTool.Controllers
             ViewBag.MachineName = obj.MachineName;
             var listOfSoftwares = MachineProvider.GetInstance().GetListOfInstalledSoftwares(obj.MachineName);
 
-            obj = NetworkProvider.GetInstance().GetMachineInformation(obj.MachineName, obj.DomainName, obj);
+            obj = NetworkProvider.GetInstance().GetMachineAdditionalInformation(obj.MachineName, obj.DomainName, obj);
 
             return View(new ViewModel { MachineInfo=obj,SoftwareList=listOfSoftwares });
         }

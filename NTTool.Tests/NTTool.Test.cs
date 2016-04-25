@@ -34,13 +34,13 @@ namespace NTTool.Tests
             var network = new MockNetworkProivder();
             Assert.IsTrue(network.DomainNetworkComputers("Domain").Count > 0);
         }
+
         [TestMethod]
-        public void GetAdditionalMachineInformation()
+        public void ActiveNetworkComputers()
         {
             var network = new MockNetworkProivder();
-            var machineInfo=new MachineEntity();
-            machineInfo= network.GetMachineInformation("machine", "domain", machineInfo);
-            Assert.IsTrue(machineInfo.OpratingSystem=="Windows");
+            var machineInfo = network.NetworkComputers();
+            Assert.IsTrue(machineInfo.Count>0);
         }
 
 
@@ -73,12 +73,21 @@ namespace NTTool.Tests
             return objList;
         }
 
-        public Models.MachineEntity GetMachineInformation(string machine, string domain, Models.MachineEntity objMachine)
+        public Models.MachineEntity GetMachineAdditionalInformation(string machine, string domain, Models.MachineEntity objMachine)
         {
             objMachine.DomainName = "Domain";
             objMachine.OpratingSystem = "Windows";
 
             return objMachine;
+        }
+
+
+        public List<MachineEntity> NetworkComputers()
+        {
+
+            var objList = new List<Models.MachineEntity>();
+            objList.Add(new Models.MachineEntity { DomainName = "Domain", OpratingSystem = "Windows" });
+            return objList;
         }
     }
 
