@@ -15,6 +15,8 @@ namespace NTTool.Models
 
         public string IPAddress { get; set; }
 
+        public string[] IPAddresses { get; set; }
+
         public string MachineType { get; set; }
 
         public string OpratingSystem { get; set; }
@@ -30,6 +32,8 @@ namespace NTTool.Models
         public MachineStatus MachineStatus { get; set; }
 
         public DirectoryEntry MachineAdInfo { get; set; }
+
+        public List<NetworkDevices> ListOfNetworkDevices { get; set; }
 
     }
 }

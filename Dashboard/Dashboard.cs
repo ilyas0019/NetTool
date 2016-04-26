@@ -16,6 +16,11 @@ namespace Dashboard
 {
     public partial class Dashboard : Form
     {
+
+        public List<MachineEntity>  ListOfMachines { get; set; }
+        public List<NetworkDevices> ListOfNetworkDevices { get; set; }
+
+
         public Dashboard()
         {
             InitializeComponent();
@@ -24,7 +29,7 @@ namespace Dashboard
         private void btnList_Click(object sender, EventArgs e)
         {
             pgInfo.Maximum = 100;
-            pgInfo.Minimum = 1;
+            pgInfo.Minimum = 0;
             pgInfo.Value = 10;
 
             try
@@ -34,32 +39,11 @@ namespace Dashboard
             }
             catch (Exception ex)
             {
-
+                pgInfo.Value = 0;
                 MessageBox.Show(ex.Message);
             }
 
         }
-
-
-
-        private void GetListofSofwares()
-        {
-            var machineName = lstView.SelectedItems[0].SubItems[1].Text;
-            if (NetworkProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == machineName)
-            {
-                var listOfSoftwares = MachineProvider.GetInstance().GetListOfInstalledSoftwares(machineName);
-
-                lslSoftware.DataSource = listOfSoftwares;
-                lslSoftware.DisplayMember = "DisplayName";
-                lblSoftware.Text = string.Format("Total no of installed software is {0}", listOfSoftwares == null ? 0 : listOfSoftwares.Count);
-            }
-            else
-            {
-                MessageBox.Show("Please login as domain admin to see list of installed software");
-            }
-        }
-
-
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
@@ -74,6 +58,60 @@ namespace Dashboard
             }
         }
 
+        private void lstView_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GetListofSofwares();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+        }
+
+        private void Dashboard_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                lstView.Items.Clear();
+                lstView.FullRowSelect = true;
+                lstView.SmallImageList = imgList;
+                lslSoftware.DataSource = null;
+
+                // Attach Subitems to the ListView
+                lstView.Columns.Clear();
+                lstView.Columns.Add("Machine Status", 100, HorizontalAlignment.Left);
+                lstView.Columns.Add("Machine Name", 100, HorizontalAlignment.Left);
+                lstView.Columns.Add("Machine IP", 80, HorizontalAlignment.Left);
+                lstView.Columns.Add("Machine MAC", 80, HorizontalAlignment.Left);
+                lstView.Columns.Add("Machine OS", 100, HorizontalAlignment.Left);
+                lstView.Columns.Add("Machine OS Version", 150, HorizontalAlignment.Left);
+
+
+
+                lstNetworkDevices.Items.Clear();
+                lstNetworkDevices.FullRowSelect = true;
+
+
+                lslSoftware.DataSource = null;
+
+                // Attach Subitems to the ListView
+                lstNetworkDevices.Columns.Clear();
+                lstNetworkDevices.Columns.Add("Device ID", 20, HorizontalAlignment.Left);
+                lstNetworkDevices.Columns.Add("Adapter Type", 100, HorizontalAlignment.Left);
+                lstNetworkDevices.Columns.Add("Description", 150, HorizontalAlignment.Left);
+                lstNetworkDevices.Columns.Add("MACAddress", 80, HorizontalAlignment.Left);
+                lstNetworkDevices.Columns.Add("Manufacturer", 100, HorizontalAlignment.Left);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void FillListOfMachines(string searchString = null)
         {
 
@@ -83,6 +121,7 @@ namespace Dashboard
             var domains = NetworkProvider.GetInstance().EnumerateDomains();
 
             var listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(domains.FirstOrDefault());
+            ListOfMachines = listOfMachines;
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -97,7 +136,6 @@ namespace Dashboard
             PopulateListView(listOfMachines);
 
         }
-
 
         public void PopulateListView(List<MachineEntity> listOfMachines)
         {
@@ -130,34 +168,68 @@ namespace Dashboard
             lblInfo.Text = string.Format("Total no of machines is '{0}' currently online '{1}'", listOfMachines.Count, online);
         }
 
-        private void lstView_Click(object sender, EventArgs e)
+        private void GetListofSofwares()
         {
-            try
+            var machineName = lstView.SelectedItems[0].SubItems[1].Text;
+            if (NetworkProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == machineName)
             {
-                GetListofSofwares();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                var listOfSoftwares = MachineProvider.GetInstance().GetListOfInstalledSoftwares(machineName);
 
+                lslSoftware.DataSource = listOfSoftwares;
+                lslSoftware.DisplayMember = "DisplayName";
+                lblSoftware.Text = string.Format("Total no of installed software is {0}", listOfSoftwares == null ? 0 : listOfSoftwares.Count);
+
+
+                PopulateNetworkDevices(machineName);
+
+
+            }
+            else
+            {
+                MessageBox.Show("Please login as domain admin to see list of installed software");
             }
         }
 
-        private void Dashboard_Load(object sender, EventArgs e)
-        {
-            lstView.Items.Clear();
-            lstView.FullRowSelect = true;
-            lstView.SmallImageList = imgList;
-            lslSoftware.DataSource = null;
 
-            // Attach Subitems to the ListView
-            lstView.Columns.Clear();
-            lstView.Columns.Add("Machine Status", 100, HorizontalAlignment.Left);
-            lstView.Columns.Add("Machine Name", 200, HorizontalAlignment.Left);
-            lstView.Columns.Add("Machine IP", 80, HorizontalAlignment.Left);
-            lstView.Columns.Add("Machine MAC", 80, HorizontalAlignment.Left);
-            lstView.Columns.Add("Machine OS", 200, HorizontalAlignment.Left);
-            lstView.Columns.Add("Machine OS Version", 200, HorizontalAlignment.Left);
+        private void GetListofIPAddresses()
+        {
+            var macAddress = lstNetworkDevices.SelectedItems[0].SubItems[3].Text;
+            if (NetworkProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == lstView.SelectedItems[0].SubItems[1].Text)
+            {
+                var listOfIPAddresses = ListOfNetworkDevices.Where(x => x.MACaddress == macAddress).ToList().FirstOrDefault();
+                lstIPAddress.DataSource = listOfIPAddresses.IPAddresses;
+            }
+            else
+            {
+                MessageBox.Show("Please login as domain admin to see list of installed software");
+            }
         }
+
+
+        private void PopulateNetworkDevices(string machineName)
+        {
+
+            var machineDetails = ListOfMachines.Where(x => x.MachineName == machineName).ToList().FirstOrDefault();
+
+            ListOfNetworkDevices = machineDetails.ListOfNetworkDevices;
+
+            foreach (var item in machineDetails.ListOfNetworkDevices)
+            {
+                ListViewItem lvi = new ListViewItem(item.DeviceID);
+                lvi.SubItems.Add(item.Adaptertype);
+                lvi.SubItems.Add(item.Description);
+                lvi.SubItems.Add(item.MACaddress);
+                lvi.SubItems.Add(item.Manufacturer);
+                lstNetworkDevices.Items.Add(lvi);
+            }
+
+
+        }
+
+        private void lstNetworkDevices_Click(object sender, EventArgs e)
+        {
+            GetListofIPAddresses();
+        }
+
     }
 }

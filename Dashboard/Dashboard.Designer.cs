@@ -45,13 +45,15 @@
             this.lblSoftware = new System.Windows.Forms.Label();
             this.lslSoftware = new System.Windows.Forms.ListBox();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
+            this.lstNetworkDevices = new System.Windows.Forms.ListView();
+            this.lstIPAddress = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // pgInfo
             // 
-            this.pgInfo.Location = new System.Drawing.Point(13, 479);
+            this.pgInfo.Location = new System.Drawing.Point(12, 715);
             this.pgInfo.Name = "pgInfo";
             this.pgInfo.Size = new System.Drawing.Size(1215, 23);
             this.pgInfo.TabIndex = 8;
@@ -118,11 +120,11 @@
             // chkOnline
             // 
             this.chkOnline.AutoSize = true;
-            this.chkOnline.Location = new System.Drawing.Point(479, 12);
+            this.chkOnline.Location = new System.Drawing.Point(404, 12);
             this.chkOnline.Name = "chkOnline";
-            this.chkOnline.Size = new System.Drawing.Size(80, 17);
+            this.chkOnline.Size = new System.Drawing.Size(129, 17);
             this.chkOnline.TabIndex = 14;
-            this.chkOnline.Text = "Online Only";
+            this.chkOnline.Text = "Online Machines Only";
             this.chkOnline.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -147,11 +149,11 @@
             // 
             // btnList
             // 
-            this.btnList.Location = new System.Drawing.Point(569, 8);
+            this.btnList.Location = new System.Drawing.Point(549, 8);
             this.btnList.Name = "btnList";
-            this.btnList.Size = new System.Drawing.Size(121, 23);
+            this.btnList.Size = new System.Drawing.Size(141, 23);
             this.btnList.TabIndex = 7;
-            this.btnList.Text = "Scan Network";
+            this.btnList.Text = "Scan Network Machines";
             this.btnList.UseVisualStyleBackColor = true;
             this.btnList.Click += new System.EventHandler(this.btnList_Click);
             // 
@@ -190,11 +192,31 @@
             this.imgList.Images.SetKeyName(0, "OFF.jpg");
             this.imgList.Images.SetKeyName(1, "ON.jpg");
             // 
+            // lstNetworkDevices
+            // 
+            this.lstNetworkDevices.Location = new System.Drawing.Point(23, 509);
+            this.lstNetworkDevices.Name = "lstNetworkDevices";
+            this.lstNetworkDevices.Size = new System.Drawing.Size(681, 172);
+            this.lstNetworkDevices.TabIndex = 16;
+            this.lstNetworkDevices.UseCompatibleStateImageBehavior = false;
+            this.lstNetworkDevices.View = System.Windows.Forms.View.Details;
+            this.lstNetworkDevices.Click += new System.EventHandler(this.lstNetworkDevices_Click);
+            // 
+            // lstIPAddress
+            // 
+            this.lstIPAddress.FormattingEnabled = true;
+            this.lstIPAddress.Location = new System.Drawing.Point(725, 509);
+            this.lstIPAddress.Name = "lstIPAddress";
+            this.lstIPAddress.Size = new System.Drawing.Size(502, 173);
+            this.lstIPAddress.TabIndex = 17;
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1243, 513);
+            this.ClientSize = new System.Drawing.Size(1243, 750);
+            this.Controls.Add(this.lstIPAddress);
+            this.Controls.Add(this.lstNetworkDevices);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblSoftware);
             this.Controls.Add(this.lslSoftware);
@@ -232,6 +254,8 @@
         private System.Windows.Forms.Label lblSoftware;
         private System.Windows.Forms.ListBox lslSoftware;
         private System.Windows.Forms.ImageList imgList;
+        private System.Windows.Forms.ListView lstNetworkDevices;
+        private System.Windows.Forms.ListBox lstIPAddress;
     }
 }
 

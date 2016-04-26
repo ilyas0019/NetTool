@@ -44,6 +44,7 @@
     <Compile Include="IMachineProvider.cs" />
     <Compile Include="INetworkProvider.cs" />
     <Compile Include="Models\MachineStatus.cs" />
+    <Compile Include="Models\NetworkDevices.cs" />
     <Compile Include="NetworkProvider.cs" />
     <Compile Include="Models\MachineEntity.cs" />
     <Compile Include="Models\SoftwareEntity.cs" />

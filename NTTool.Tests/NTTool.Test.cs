@@ -59,6 +59,8 @@ namespace NTTool.Tests
 
     public class MockNetworkProivder : INetworkProvider
     {
+        
+
         public List<string> EnumerateDomains()
         {
             var obj = new List<string>();
@@ -88,6 +90,12 @@ namespace NTTool.Tests
             var objList = new List<Models.MachineEntity>();
             objList.Add(new Models.MachineEntity { DomainName = "Domain", OpratingSystem = "Windows" });
             return objList;
+        }
+
+        public bool IsDomainAdministrator
+        {
+            get;
+            set;
         }
     }
 

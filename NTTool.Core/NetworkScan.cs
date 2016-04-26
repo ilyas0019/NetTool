@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Net;
 using NTTool.Models;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace NTTool.Core
 {
@@ -164,7 +166,7 @@ namespace NTTool.Core
             var returnList = new List<MachineEntity>();
             MachineEntity machineentity=null;
             string computerName = "";
-
+        
             for (int nIndex = 0; nIndex < alNetworkComputers.Count; nIndex++)
             {
                 computerName = ((NetApi32.SERVER_INFO_101)alNetworkComputers[nIndex]).sv101_name;
@@ -172,16 +174,50 @@ namespace NTTool.Core
                 machineentity.MachineName = computerName;
                 if (Dns.GetHostName() != computerName)
                 {
-                    machineentity.IPAddress = Dns.GetHostEntry(computerName).AddressList[0].ToString();
+                    try
+                    {
+                        machineentity.IPAddress = Dns.GetHostAddresses(computerName)[0].ToString();
+                    }
+                    catch (System.Net.Sockets.SocketException)
+                    {
+                        machineentity.IPAddress = "NA";
+                    }
+                    
                 }
                 else
                 {
-                    machineentity.IPAddress = "127.0.0.1";
+                    machineentity.IPAddress = GetLocalIPv4(NetworkInterfaceType.Ethernet);
                 }
                 returnList.Add(machineentity);
                 
             }
             return returnList;
         }
+
+        public static string GetLocalIPv4(NetworkInterfaceType networkInterfaceType)
+        {
+            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces()
+                .Where(i => i.NetworkInterfaceType == networkInterfaceType && i.OperationalStatus == OperationalStatus.Up);
+
+            foreach (NetworkInterface networkInterface in networkInterfaces)
+            {
+                var adapterProperties = networkInterface.GetIPProperties();
+
+                if (adapterProperties.GatewayAddresses.FirstOrDefault() != null)
+                {
+                    foreach (UnicastIPAddressInformation ip in networkInterface.GetIPProperties().UnicastAddresses)
+                    {
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            return ip.Address.ToString();
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+        
+
     }
 }
