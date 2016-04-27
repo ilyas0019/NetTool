@@ -9,7 +9,11 @@ namespace NTTool.Core
 {
     public interface IMachineProvider
     {
-         List<SoftwareEntity> GetListOfInstalledSoftwares(string machineName);
-        
+       
+
+        List<SoftwareEntity> GetListOfInstalledSoftwares(string machineName);
+
+        MachineEntity GetMachineAdditionalInformation(string machine, string domain, MachineEntity objMachine);
+
     }
 }

@@ -1,9 +1,12 @@
 ﻿using Microsoft.Win32;
+using NTTool.Core.Models;
 using NTTool.Models;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 using System.Management;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +14,7 @@ namespace NTTool.Core
 {
     public class MachineProvider : IMachineProvider
     {
+       
         private static IMachineProvider obj;
 
         public List<SoftwareEntity> GetListOfInstalledSoftwares(string machineName)
@@ -55,6 +59,147 @@ namespace NTTool.Core
             }
             return programs;
         }
+    
+        public MachineEntity GetMachineAdditionalInformation(string machine, string domain, MachineEntity objMachine)
+        {
+
+            ManagementScope scope = new ManagementScope();
+            try
+            {
+                ConnectionOptions options = new ConnectionOptions();
+                scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
+                scope.Connect();
+
+                var macAddress = GetMACAddress(scope);
+
+                var ipaddresses = GetIPAddresses(scope);
+
+                var networkDevices = GetNetworkDevices(scope);
+
+                objMachine.IPAddresses = ipaddresses;
+
+                objMachine.ListOfNetworkDevices = networkDevices;
+
+
+                SelectQuery query = new SelectQuery("SELECT * FROM Win32_OperatingSystem");
+
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+
+                using (ManagementObjectCollection queryCollection = searcher.Get())
+                {
+                    foreach (ManagementObject m in queryCollection)
+                    {
+                        objMachine.MachineName = m["csname"].ToString();
+                        objMachine.OpratingSystem = m["Caption"].ToString();
+                        objMachine.OpratingSystemVersion = m["Version"].ToString();
+                        objMachine.SystemDirectory = m["WindowsDirectory"].ToString();
+                        objMachine.Manufacturer = m["Manufacturer"].ToString();
+                        objMachine.MachineMACAddress = macAddress;
+                    }
+
+                }
+
+
+
+            }
+
+            catch (Exception ex)
+            {
+
+                return objMachine;
+            }
+
+            return objMachine;
+        }
+
+        private string GetMACAddress(ManagementScope scope)
+        {
+            SelectQuery query = new SelectQuery("Select * FROM Win32_NetworkAdapterConfiguration");
+            ManagementObjectSearcher objMOS = new ManagementObjectSearcher(scope, query);
+            ManagementObjectCollection objMOC = objMOS.Get();
+            string macAddress = String.Empty;
+            foreach (ManagementObject objMO in objMOC)
+            {
+                object tempMacAddrObj = objMO["MacAddress"];
+
+                if (tempMacAddrObj == null)
+                {
+                    continue;
+                }
+                if (macAddress == String.Empty)
+                {
+                    macAddress = tempMacAddrObj.ToString();
+                }
+                objMO.Dispose();
+            }
+
+            return macAddress;
+        }
+
+        private string[] GetIPAddresses(ManagementScope scope)
+        {
+
+            SelectQuery query = new SelectQuery("SELECT IPAddress FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'TRUE'");
+
+            ManagementObjectSearcher NetworkSearcher = new ManagementObjectSearcher(scope, query);
+            string[] arrIPAddress = null;
+            foreach (ManagementObject NetworkObj in NetworkSearcher.Get())
+            {
+                arrIPAddress = (string[])(NetworkObj["IPAddress"]);
+            }
+
+            return arrIPAddress;
+        }
+
+        private string[] GetIPAddressByMacAddress(ManagementScope scope, string macAddress)
+        {
+
+            SelectQuery query = new SelectQuery("SELECT IPAddress FROM Win32_NetworkAdapterConfiguration WHERE MACAddress = '" + macAddress + "'");
+
+            ManagementObjectSearcher NetworkSearcher = new ManagementObjectSearcher(scope, query);
+            string[] arrIPAddress = null;
+            foreach (ManagementObject NetworkObj in NetworkSearcher.Get())
+            {
+                arrIPAddress = (string[])(NetworkObj["IPAddress"]);
+            }
+
+            return arrIPAddress;
+        }
+
+        private List<NetworkDevices> GetNetworkDevices(ManagementScope scope)
+        {
+            ManagementObjectSearcher objSearcher;
+            ManagementObjectCollection objColl;
+            ObjectQuery objQuery;
+            List<NetworkDevices> objListOfNetworkDevices = new List<NetworkDevices>(); ;
+            ConnectionOptions connOpts = new ConnectionOptions();
+            objQuery = new ObjectQuery("SELECT * FROM Win32_NetworkAdapter WHERE AdapterTypeID <> NULL");
+            scope.Connect();
+
+            objSearcher = new ManagementObjectSearcher(scope, objQuery);
+            objSearcher.Options.Timeout = new TimeSpan(0, 0, 0, 0, 7000);
+            objColl = objSearcher.Get();
+            NetworkDevices objNetworkDevice;
+            foreach (ManagementObject mo in objColl)
+            {
+                objNetworkDevice = new NetworkDevices();
+
+                objNetworkDevice.DeviceID = mo["DeviceID"] == null ? "Unavailble" : mo["DeviceID"].ToString();
+                objNetworkDevice.Adaptertype = mo["AdapterType"] == null ? "Unavailble" : mo["AdapterType"].ToString();
+                objNetworkDevice.Description = mo["Description"] == null ? "Unavailble" : mo["Description"].ToString();
+                objNetworkDevice.MACaddress = mo["MACAddress"] == null ? "Unavailble" : mo["MACAddress"].ToString();
+                objNetworkDevice.Manufacturer = mo["Manufacturer"] == null ? "Unavailble" : mo["Manufacturer"].ToString();
+
+                var ip = GetIPAddressByMacAddress(scope, objNetworkDevice.MACaddress);
+                objNetworkDevice.IPAddresses = ip;
+
+                objListOfNetworkDevices.Add(objNetworkDevice);
+
+            }
+
+            return objListOfNetworkDevices;
+
+        }
 
         public static IMachineProvider GetInstance()
         {
@@ -66,3 +211,11 @@ namespace NTTool.Core
         }
     }
 }
+
+
+/*
+ * if (Dns.GetHostName() == objMachine.MachineName || IsDomainAdministrator)
+                    {
+                        objMachine = GetMachineAdditionalInformation(objMachine.MachineName, domainName, objMachine);
+                    }
+ */

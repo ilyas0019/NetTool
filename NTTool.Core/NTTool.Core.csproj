@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMachineProvider.cs" />
-    <Compile Include="INetworkProvider.cs" />
+    <Compile Include="DomainProvider.cs" />
+    <Compile Include="Interface\IDomainProvider.cs" />
+    <Compile Include="Interface\IMachineProvider.cs" />
+    <Compile Include="Interface\INetworkProvider.cs" />
     <Compile Include="Models\MachineStatus.cs" />
     <Compile Include="Models\NetworkDevices.cs" />
     <Compile Include="NetworkProvider.cs" />

@@ -19,7 +19,8 @@ namespace Dashboard
 
         public List<MachineEntity>  ListOfMachines { get; set; }
         public List<NetworkDevices> ListOfNetworkDevices { get; set; }
-
+        public string SelectedDomain { get; set; }
+        
 
         public Dashboard()
         {
@@ -63,6 +64,8 @@ namespace Dashboard
             try
             {
                 GetListofSofwares();
+                PopulateNetworkDevices();
+
             }
             catch (Exception ex)
             {
@@ -71,6 +74,11 @@ namespace Dashboard
             }
         }
 
+        private void lstNetworkDevices_Click(object sender, EventArgs e)
+        {
+            GetListofIPAddresses();
+        }
+        
         private void Dashboard_Load(object sender, EventArgs e)
         {
             try
@@ -125,9 +133,10 @@ namespace Dashboard
             lblSoftware.Text = "";
             lblInfo.Text = "";
 
-            var domains = NetworkProvider.GetInstance().EnumerateDomains();
+            var domains = DomainProvider.GetInstance().EnumerateDomains();
+            SelectedDomain = domains.FirstOrDefault();
 
-            var listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(domains.FirstOrDefault());
+            var listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(SelectedDomain);
             ListOfMachines = listOfMachines;
 
             if (!string.IsNullOrEmpty(searchString))
@@ -178,17 +187,13 @@ namespace Dashboard
         private void GetListofSofwares()
         {
             var machineName = lstView.SelectedItems[0].SubItems[1].Text;
-            if (NetworkProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == machineName)
+            if (DomainProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == machineName)
             {
                 var listOfSoftwares = MachineProvider.GetInstance().GetListOfInstalledSoftwares(machineName);
 
                 lslSoftware.DataSource = listOfSoftwares;
                 lslSoftware.DisplayMember = "DisplayName";
                 lblSoftware.Text = string.Format("{0} Software Installed on machine {1}", listOfSoftwares == null ? 0 : listOfSoftwares.Count,machineName);
-
-
-                PopulateNetworkDevices(machineName);
-
 
             }
             else
@@ -197,14 +202,12 @@ namespace Dashboard
             }
         }
 
-
         private void GetListofIPAddresses()
         {
             var macAddress = lstNetworkDevices.SelectedItems[0].SubItems[3].Text;
             var listOfIPAddresses = ListOfNetworkDevices.Where(x => x.MACaddress == macAddress).ToList().FirstOrDefault();
-            if (NetworkProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == lstView.SelectedItems[0].SubItems[1].Text)
+            if (DomainProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == lstView.SelectedItems[0].SubItems[1].Text)
             {
-              
                 lstIPAddress.DataSource = listOfIPAddresses.IPAddresses;
             }
             else
@@ -215,12 +218,15 @@ namespace Dashboard
             lblIPAddresses.Text = string.Format("{0} IPAddresses found on machine {1} with MACAddress {2} ", listOfIPAddresses.IPAddresses == null ? 0 : listOfIPAddresses.IPAddresses.Length, lstView.SelectedItems[0].SubItems[1].Text,macAddress);
         }
 
-
-        private void PopulateNetworkDevices(string machineName)
+        private void PopulateNetworkDevices()
         {
+            var machineName = lstView.SelectedItems[0].SubItems[1].Text;
 
-            var machineDetails = ListOfMachines.Where(x => x.MachineName == machineName).ToList().FirstOrDefault();
+            var machineDetails =  ListOfMachines.Where(x => x.MachineName == machineName).ToList().FirstOrDefault();
 
+            machineDetails = MachineProvider.GetInstance().GetMachineAdditionalInformation(machineName, SelectedDomain, machineDetails);
+
+            
             ListOfNetworkDevices = machineDetails.ListOfNetworkDevices;
 
             foreach (var item in machineDetails.ListOfNetworkDevices)
@@ -236,10 +242,6 @@ namespace Dashboard
             lblNetworkDevices.Text = string.Format("{0} NetworkDevices Installed on machine :{1}", machineDetails.ListOfNetworkDevices == null ? 0 : machineDetails.ListOfNetworkDevices.Count, lstView.SelectedItems[0].SubItems[1].Text);
         }
 
-        private void lstNetworkDevices_Click(object sender, EventArgs e)
-        {
-            GetListofIPAddresses();
-        }
-
+       
     }
 }
