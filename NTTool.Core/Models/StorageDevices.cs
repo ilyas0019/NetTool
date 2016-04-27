@@ -9,7 +9,7 @@ namespace NTTool.Core.Models
     {
         public string Caption { get; set; }
         public string Name { get; set; }
-        public string ProviderName { get; set; }
+        public string FreeSpace { get; set; }
         public string SerialNumber { get; set; }
     }
 }

@@ -16,7 +16,5 @@ namespace NTTool.Core
 
         MachineEntity GetStorageInfoOfMachine(string machine, string domain, MachineEntity objMachine);
 
-        MachineEntity GetLoggedOnUserInfo(string machine, string domain, MachineEntity objMachine);
-
     }
 }

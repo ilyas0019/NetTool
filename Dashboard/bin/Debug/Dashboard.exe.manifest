@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dashboard.exe" size="23040">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dashboard.exe" size="23552">
       <assemblyIdentity name="Dashboard" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>khCu9G5mWj8QTNq3ObNSH99YK09t1CMDiydzFay2aSQ=</dsig:DigestValue>
+        <dsig:DigestValue>hBXveiLg4wsMEf5012IlJShSfY9ke1wZiotV3waggks=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -61,7 +61,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>usIrJ9ScQZKolsePLVKa4RLyqftCqGvsRzezeKyDEz8=</dsig:DigestValue>
+        <dsig:DigestValue>aao4GJAHCpBK5ZACQQng3vZ9wBLP4eodA5M8c2sL8r4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

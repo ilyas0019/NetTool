@@ -80,26 +80,21 @@ namespace NTTool.Core
 
                 objMachine.ListOfNetworkDevices = networkDevices;
 
-                objMachine= GetLoggedOnUserInfo(machine, domain, objMachine);
-
+                //objMachine= GetLoggedOnUserInfo(machine, domain, objMachine);
 
                 SelectQuery query = new SelectQuery("SELECT * FROM Win32_OperatingSystem");
 
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
 
-                using (ManagementObjectCollection queryCollection = searcher.Get())
+
+                foreach (ManagementObject m in searcher.Get())
                 {
-                    foreach (ManagementObject m in queryCollection)
-                    {
-                        objMachine.MachineName = m["csname"].ToString();
-                        objMachine.OpratingSystem = m["Caption"].ToString();
-                        objMachine.OpratingSystemVersion = m["Version"].ToString();
-                        objMachine.SystemDirectory = m["WindowsDirectory"].ToString();
-                        objMachine.Manufacturer = m["Manufacturer"].ToString();
-                    }
-
+                    objMachine.MachineName = m["csname"].ToString();
+                    objMachine.OpratingSystem = m["Caption"].ToString();
+                    objMachine.OpratingSystemVersion = m["Version"].ToString();
+                    objMachine.SystemDirectory = m["WindowsDirectory"].ToString();
+                    objMachine.Manufacturer = m["Manufacturer"].ToString();
                 }
-
 
 
             }
@@ -149,7 +144,7 @@ namespace NTTool.Core
             ManagementObjectCollection objColl;
             ObjectQuery objQuery;
             List<NetworkDevices> objListOfNetworkDevices = new List<NetworkDevices>(); ;
-            ConnectionOptions connOpts = new ConnectionOptions();
+
             objQuery = new ObjectQuery("SELECT * FROM Win32_NetworkAdapter WHERE AdapterTypeID <> NULL");
             scope.Connect();
 
@@ -157,6 +152,7 @@ namespace NTTool.Core
             objSearcher.Options.Timeout = new TimeSpan(0, 0, 0, 0, 7000);
             objColl = objSearcher.Get();
             NetworkDevices objNetworkDevice;
+            string[] ip = null;
             foreach (ManagementObject mo in objColl)
             {
                 objNetworkDevice = new NetworkDevices();
@@ -167,7 +163,7 @@ namespace NTTool.Core
                 objNetworkDevice.MACaddress = mo["MACAddress"] == null ? "Unavailble" : mo["MACAddress"].ToString();
                 objNetworkDevice.Manufacturer = mo["Manufacturer"] == null ? "Unavailble" : mo["Manufacturer"].ToString();
 
-                var ip = GetIPAddressByMacAddress(scope, objNetworkDevice.MACaddress);
+                ip = GetIPAddressByMacAddress(scope, objNetworkDevice.MACaddress);
                 objNetworkDevice.IPAddresses = ip;
 
                 objListOfNetworkDevices.Add(objNetworkDevice);
@@ -176,93 +172,6 @@ namespace NTTool.Core
 
             return objListOfNetworkDevices;
 
-        }
-
-        public MachineEntity GetStorageInfoOfMachine(string machine, string domain, MachineEntity objMachine)
-        {
-
-            ManagementScope scope = new ManagementScope();
-            try
-            {
-                ConnectionOptions options = new ConnectionOptions();
-                scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
-                scope.Connect();
-
-                SelectQuery query = new SelectQuery("SELECT * FROM Win32_LogicalDisk");
-
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-                var storageDevices = new StorageDevices();
-                objMachine.ListOfStoragekDevices = new List<StorageDevices>();
-                using (ManagementObjectCollection queryCollection = searcher.Get())
-                {
-                    foreach (ManagementObject m in queryCollection)
-                    {
-                        storageDevices = new StorageDevices();
-
-                        storageDevices.Name = m["Name"] == null ? "Unavailble" : m["Name"].ToString();
-                        storageDevices.Caption = m["Caption"] == null ? "Unavailble" : m["Caption"].ToString();
-                        storageDevices.ProviderName = m["ProviderName"] == null ? "Unavailble" : m["ProviderName"].ToString();
-                        storageDevices.SerialNumber = m["VolumeSerialNumber"] == null ? "Unavailble" : m["VolumeSerialNumber"].ToString();
-
-                        objMachine.ListOfStoragekDevices.Add(storageDevices);
-                    }
-
-                }
-
-
-
-            }
-
-            catch (Exception ex)
-            {
-
-                return objMachine;
-            }
-
-            return objMachine;
-        }
-
-        public static IMachineProvider GetInstance()
-        {
-            if (obj == null)
-            {
-                obj = new MachineProvider();
-            }
-            return obj;
-        }
-
-        public MachineEntity GetLoggedOnUserInfo(string machine, string domain, MachineEntity objMachine)
-        {
-
-            ManagementScope scope = new ManagementScope();
-            try
-            {
-                ConnectionOptions options = new ConnectionOptions();
-                scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
-                scope.Connect();
-
-                SelectQuery query = new SelectQuery("SELECT * FROM Win32_LoggedOnUser");
-
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-                
-                using (ManagementObjectCollection queryCollection = searcher.Get())
-                {
-                    foreach (ManagementObject m in queryCollection)
-                    {
-
-                        objMachine.LoggedInUser = m["Antecedent"] == null ? "Unavailble" : m["Antecedent"].ToString();
-                    }
-
-                }
-            }
-
-            catch (Exception ex)
-            {
-
-                return objMachine;
-            }
-
-            return objMachine;
         }
 
         private string GetMACAddress(ManagementScope scope)
@@ -288,6 +197,103 @@ namespace NTTool.Core
 
             return macAddress;
         }
+
+
+        public MachineEntity GetStorageInfoOfMachine(string machine, string domain, MachineEntity objMachine)
+        {
+
+            ManagementScope scope = new ManagementScope();
+            try
+            {
+                ConnectionOptions options = new ConnectionOptions();
+                scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
+                scope.Connect();
+
+                SelectQuery query = new SelectQuery("SELECT * FROM Win32_LogicalDisk");
+
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+                var storageDevices = new StorageDevices();
+                objMachine.ListOfStoragekDevices = new List<StorageDevices>();
+                using (ManagementObjectCollection queryCollection = searcher.Get())
+                {
+                    foreach (ManagementObject m in queryCollection)
+                    {
+                        storageDevices = new StorageDevices();
+
+                        storageDevices.Name = m["Name"] == null ? "Unavailble" : m["Name"].ToString();
+                        storageDevices.Caption = m["Caption"] == null ? "Unavailble" : m["Caption"].ToString();
+                        storageDevices.FreeSpace = FreeSpaceInGB(m["FreeSpace"] == null ? "0" : m["FreeSpace"].ToString());
+                        storageDevices.SerialNumber = m["VolumeSerialNumber"] == null ? "Unavailble" : m["VolumeSerialNumber"].ToString();
+
+                        objMachine.ListOfStoragekDevices.Add(storageDevices);
+                    }
+
+                }
+
+
+
+            }
+
+            catch (Exception ex)
+            {
+
+                return objMachine;
+            }
+
+            return objMachine;
+        }
+
+        private string FreeSpaceInGB(string freeSpace)
+        {
+
+            return ((Convert.ToDouble(freeSpace) / 1024/1024)/1024).ToString("0.00");
+
+        }
+
+        public static IMachineProvider GetInstance()
+        {
+            if (obj == null)
+            {
+                obj = new MachineProvider();
+            }
+            return obj;
+        }
+
+        //public MachineEntity GetLoggedOnUserInfo(string machine, string domain, MachineEntity objMachine)
+        //{
+
+        //    ManagementScope scope = new ManagementScope();
+        //    try
+        //    {
+        //        ConnectionOptions options = new ConnectionOptions();
+        //        scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
+        //        scope.Connect();
+
+        //        SelectQuery query = new SelectQuery("SELECT * FROM Win32_LoggedOnUser");
+
+        //        ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+
+        //        using (ManagementObjectCollection queryCollection = searcher.Get())
+        //        {
+        //            foreach (ManagementObject m in queryCollection)
+        //            {
+
+        //                objMachine.LoggedInUser = m["Antecedent"] == null ? "Unavailble" : m["Antecedent"].ToString();
+        //            }
+
+        //        }
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+
+        //        return objMachine;
+        //    }
+
+        //    return objMachine;
+        //}
+
+
     }
 }
 

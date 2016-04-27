@@ -30,18 +30,15 @@ namespace Dashboard
 
         private void btnList_Click(object sender, EventArgs e)
         {
-            pgInfo.Maximum = 100;
-            pgInfo.Minimum = 0;
-            pgInfo.Value = 10;
-
+            ResetPager(0);
             try
             {
                 FillListOfMachines();
-                pgInfo.Value = 100;
+                
             }
             catch (Exception ex)
             {
-                pgInfo.Value = 0;
+                ResetPager(0);
                 MessageBox.Show(ex.Message);
             }
 
@@ -49,6 +46,12 @@ namespace Dashboard
 
         private void ClearForm()
         {
+            lblInfo.Text = "";
+            lblIPAddresses.Text = "";
+            lblNetworkDevices.Text = "";
+            lblStorage.Text = "";
+            lblSoftware.Text = "";
+
             lstView.Items.Clear();
             lstNetworkDevices.Items.Clear();
             lstStorage.Items.Clear();
@@ -59,13 +62,14 @@ namespace Dashboard
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-
+            ResetPager(0);
             if (txtFilter.Text.ToUpper().Trim() != "")
             {
                 FillListOfMachines(txtFilter.Text.ToUpper());
             }
             else
             {
+                ResetPager(0);
                 MessageBox.Show("Please enter machine name");
             }
         }
@@ -110,7 +114,8 @@ namespace Dashboard
                 {
                     lvi = new ListViewItem(item.Name);
                     lvi.SubItems.Add(item.SerialNumber);
-                    lvi.SubItems.Add(item.ProviderName);
+                    lvi.SubItems.Add(item.FreeSpace);
+
                     lstStorage.Items.Add(lvi);
                 }
 
@@ -122,18 +127,13 @@ namespace Dashboard
 
             lblStorage.Text = string.Format("{0} Storage Devices found on machine {1} ", objMachine.ListOfStoragekDevices == null ? 0 : objMachine.ListOfStoragekDevices.Count, SelectedMachineName);
         }
-
-       
-
+        
         private void Dashboard_Load(object sender, EventArgs e)
         {
             try
             {
 
-                lblInfo.Text = "";
-                lblIPAddresses.Text = "";
-                lblNetworkDevices.Text = "";
-                lblSoftware.Text = "";
+                ClearForm();
 
 
                 lstView.Items.Clear();
@@ -149,6 +149,7 @@ namespace Dashboard
                 lstView.Columns.Add("Machine MAC", 80, HorizontalAlignment.Left);
                 lstView.Columns.Add("Machine OS", 100, HorizontalAlignment.Left);
                 lstView.Columns.Add("Machine OS Version", 150, HorizontalAlignment.Left);
+                lstView.Columns.Add("Loggedin User", 150, HorizontalAlignment.Left);
              
 
 
@@ -167,9 +168,9 @@ namespace Dashboard
                 lstNetworkDevices.Columns.Add("Manufacturer", 100, HorizontalAlignment.Left);
 
                 lstStorage.Columns.Clear();
-                lstStorage.Columns.Add("Name");
-                lstStorage.Columns.Add("Serial Number");
-                lstStorage.Columns.Add("Path");
+                lstStorage.Columns.Add("Name",50, HorizontalAlignment.Left);
+                lstStorage.Columns.Add("Serial Number", 100, HorizontalAlignment.Left);
+                lstStorage.Columns.Add("Free Space(GB)", 150, HorizontalAlignment.Left);
                 
                 
             }
@@ -212,18 +213,20 @@ namespace Dashboard
             lstSoftware.DataSource = null;
             int online = 0;
             MachineEntity objMachine = new MachineEntity();
+
+            ResetPager(listOfMachines.Count);
+
             foreach (var item in listOfMachines)
             {
-                objMachine = new MachineEntity();
 
-                objMachine = MachineProvider.GetInstance().GetMachineAdditionalInformation(item.MachineName, SelectedDomain, item);
-
+                objMachine = item;
                 ListViewItem lvi = new ListViewItem(Enum.GetName(typeof(MachineStatus), item.MachineStatus));
                 lvi.SubItems.Add(objMachine.MachineName);
                 lvi.SubItems.Add(objMachine.IPAddress);
                 lvi.SubItems.Add(objMachine.MachineMACAddress);
                 lvi.SubItems.Add(objMachine.OpratingSystem);
                 lvi.SubItems.Add(objMachine.OpratingSystemVersion);
+                lvi.SubItems.Add(objMachine.LoggedInUser);
                 if (objMachine.MachineStatus == MachineStatus.Online)
                 {
                     lvi.ImageIndex = 1;
@@ -235,9 +238,17 @@ namespace Dashboard
                 }
 
                 lstView.Items.Add(lvi);
+                pgInfo.Value++;
             }
 
             lblInfo.Text = string.Format("Total no of machines is '{0}' currently online '{1}'", listOfMachines.Count, online);
+        }
+
+        private void ResetPager(int maxValue)
+        {
+            pgInfo.Minimum = 0;
+            pgInfo.Value = 0;
+            pgInfo.Maximum = maxValue;
         }
 
         private void GetListofSofwares()
