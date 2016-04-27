@@ -47,10 +47,11 @@
     <Compile Include="Interface\INetworkProvider.cs" />
     <Compile Include="Models\MachineStatus.cs" />
     <Compile Include="Models\NetworkDevices.cs" />
+    <Compile Include="Models\StorageDevices.cs" />
     <Compile Include="NetworkProvider.cs" />
     <Compile Include="Models\MachineEntity.cs" />
     <Compile Include="Models\SoftwareEntity.cs" />
-    <Compile Include="NetworkScan.cs" />
+    <Compile Include="Core\NetApi32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MachineProvider.cs" />
   </ItemGroup>

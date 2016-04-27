@@ -42,26 +42,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dashboard.exe" size="21504">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dashboard.exe" size="23040">
       <assemblyIdentity name="Dashboard" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>NhLIzqNSOBN7y0hdqZpzJesz6ICy6I9nzb9MXx1zu50=</dsig:DigestValue>
+        <dsig:DigestValue>khCu9G5mWj8QTNq3ObNSH99YK09t1CMDiydzFay2aSQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NTTool.Core.dll" size="24576">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NTTool.Core.dll" size="26624">
       <assemblyIdentity name="NTTool.Core" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>lZ86J410lntVqW145+FZTm95Gfq/88ovHhHAt0mMdbs=</dsig:DigestValue>
+        <dsig:DigestValue>usIrJ9ScQZKolsePLVKa4RLyqftCqGvsRzezeKyDEz8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -9,6 +9,9 @@ namespace NTTool.Models
 {
     public class MachineEntity 
     {
+
+        public string LoggedInUser { get; set; }
+
         public string DomainName { get; set; }
 
         public string MachineName { get; set; }
@@ -34,6 +37,8 @@ namespace NTTool.Models
         public DirectoryEntry MachineAdInfo { get; set; }
 
         public List<NetworkDevices> ListOfNetworkDevices { get; set; }
+
+        public List<StorageDevices> ListOfStoragekDevices { get; set; }
 
     }
 }

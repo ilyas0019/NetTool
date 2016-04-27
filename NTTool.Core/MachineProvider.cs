@@ -14,7 +14,7 @@ namespace NTTool.Core
 {
     public class MachineProvider : IMachineProvider
     {
-       
+
         private static IMachineProvider obj;
 
         public List<SoftwareEntity> GetListOfInstalledSoftwares(string machineName)
@@ -59,7 +59,7 @@ namespace NTTool.Core
             }
             return programs;
         }
-    
+
         public MachineEntity GetMachineAdditionalInformation(string machine, string domain, MachineEntity objMachine)
         {
 
@@ -70,15 +70,17 @@ namespace NTTool.Core
                 scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
                 scope.Connect();
 
-                var macAddress = GetMACAddress(scope);
-
                 var ipaddresses = GetIPAddresses(scope);
 
                 var networkDevices = GetNetworkDevices(scope);
 
                 objMachine.IPAddresses = ipaddresses;
 
+                objMachine.MachineMACAddress = GetMACAddress(scope);
+
                 objMachine.ListOfNetworkDevices = networkDevices;
+
+                objMachine= GetLoggedOnUserInfo(machine, domain, objMachine);
 
 
                 SelectQuery query = new SelectQuery("SELECT * FROM Win32_OperatingSystem");
@@ -94,7 +96,6 @@ namespace NTTool.Core
                         objMachine.OpratingSystemVersion = m["Version"].ToString();
                         objMachine.SystemDirectory = m["WindowsDirectory"].ToString();
                         objMachine.Manufacturer = m["Manufacturer"].ToString();
-                        objMachine.MachineMACAddress = macAddress;
                     }
 
                 }
@@ -110,30 +111,6 @@ namespace NTTool.Core
             }
 
             return objMachine;
-        }
-
-        private string GetMACAddress(ManagementScope scope)
-        {
-            SelectQuery query = new SelectQuery("Select * FROM Win32_NetworkAdapterConfiguration");
-            ManagementObjectSearcher objMOS = new ManagementObjectSearcher(scope, query);
-            ManagementObjectCollection objMOC = objMOS.Get();
-            string macAddress = String.Empty;
-            foreach (ManagementObject objMO in objMOC)
-            {
-                object tempMacAddrObj = objMO["MacAddress"];
-
-                if (tempMacAddrObj == null)
-                {
-                    continue;
-                }
-                if (macAddress == String.Empty)
-                {
-                    macAddress = tempMacAddrObj.ToString();
-                }
-                objMO.Dispose();
-            }
-
-            return macAddress;
         }
 
         private string[] GetIPAddresses(ManagementScope scope)
@@ -201,6 +178,50 @@ namespace NTTool.Core
 
         }
 
+        public MachineEntity GetStorageInfoOfMachine(string machine, string domain, MachineEntity objMachine)
+        {
+
+            ManagementScope scope = new ManagementScope();
+            try
+            {
+                ConnectionOptions options = new ConnectionOptions();
+                scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
+                scope.Connect();
+
+                SelectQuery query = new SelectQuery("SELECT * FROM Win32_LogicalDisk");
+
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+                var storageDevices = new StorageDevices();
+                objMachine.ListOfStoragekDevices = new List<StorageDevices>();
+                using (ManagementObjectCollection queryCollection = searcher.Get())
+                {
+                    foreach (ManagementObject m in queryCollection)
+                    {
+                        storageDevices = new StorageDevices();
+
+                        storageDevices.Name = m["Name"] == null ? "Unavailble" : m["Name"].ToString();
+                        storageDevices.Caption = m["Caption"] == null ? "Unavailble" : m["Caption"].ToString();
+                        storageDevices.ProviderName = m["ProviderName"] == null ? "Unavailble" : m["ProviderName"].ToString();
+                        storageDevices.SerialNumber = m["VolumeSerialNumber"] == null ? "Unavailble" : m["VolumeSerialNumber"].ToString();
+
+                        objMachine.ListOfStoragekDevices.Add(storageDevices);
+                    }
+
+                }
+
+
+
+            }
+
+            catch (Exception ex)
+            {
+
+                return objMachine;
+            }
+
+            return objMachine;
+        }
+
         public static IMachineProvider GetInstance()
         {
             if (obj == null)
@@ -208,6 +229,64 @@ namespace NTTool.Core
                 obj = new MachineProvider();
             }
             return obj;
+        }
+
+        public MachineEntity GetLoggedOnUserInfo(string machine, string domain, MachineEntity objMachine)
+        {
+
+            ManagementScope scope = new ManagementScope();
+            try
+            {
+                ConnectionOptions options = new ConnectionOptions();
+                scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
+                scope.Connect();
+
+                SelectQuery query = new SelectQuery("SELECT * FROM Win32_LoggedOnUser");
+
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+                
+                using (ManagementObjectCollection queryCollection = searcher.Get())
+                {
+                    foreach (ManagementObject m in queryCollection)
+                    {
+
+                        objMachine.LoggedInUser = m["Antecedent"] == null ? "Unavailble" : m["Antecedent"].ToString();
+                    }
+
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                return objMachine;
+            }
+
+            return objMachine;
+        }
+
+        private string GetMACAddress(ManagementScope scope)
+        {
+            SelectQuery query = new SelectQuery("Select * FROM Win32_NetworkAdapterConfiguration");
+            ManagementObjectSearcher objMOS = new ManagementObjectSearcher(scope, query);
+            ManagementObjectCollection objMOC = objMOS.Get();
+            string macAddress = String.Empty;
+            foreach (ManagementObject objMO in objMOC)
+            {
+                object tempMacAddrObj = objMO["MacAddress"];
+
+                if (tempMacAddrObj == null)
+                {
+                    continue;
+                }
+                if (macAddress == String.Empty)
+                {
+                    macAddress = tempMacAddrObj.ToString();
+                }
+                objMO.Dispose();
+            }
+
+            return macAddress;
         }
     }
 }
