@@ -75,6 +75,13 @@ namespace Dashboard
         {
             try
             {
+
+                lblInfo.Text = "";
+                lblIPAddresses.Text = "";
+                lblNetworkDevices.Text = "";
+                lblSoftware.Text = "";
+
+
                 lstView.Items.Clear();
                 lstView.FullRowSelect = true;
                 lstView.SmallImageList = imgList;
@@ -99,10 +106,10 @@ namespace Dashboard
 
                 // Attach Subitems to the ListView
                 lstNetworkDevices.Columns.Clear();
-                lstNetworkDevices.Columns.Add("Device ID", 20, HorizontalAlignment.Left);
+                lstNetworkDevices.Columns.Add("Device ID", 60, HorizontalAlignment.Left);
                 lstNetworkDevices.Columns.Add("Adapter Type", 100, HorizontalAlignment.Left);
-                lstNetworkDevices.Columns.Add("Description", 150, HorizontalAlignment.Left);
-                lstNetworkDevices.Columns.Add("MACAddress", 80, HorizontalAlignment.Left);
+                lstNetworkDevices.Columns.Add("Description", 200, HorizontalAlignment.Left);
+                lstNetworkDevices.Columns.Add("MACAddress", 150, HorizontalAlignment.Left);
                 lstNetworkDevices.Columns.Add("Manufacturer", 100, HorizontalAlignment.Left);
 
             }
@@ -177,7 +184,7 @@ namespace Dashboard
 
                 lslSoftware.DataSource = listOfSoftwares;
                 lslSoftware.DisplayMember = "DisplayName";
-                lblSoftware.Text = string.Format("Total no of installed software is {0}", listOfSoftwares == null ? 0 : listOfSoftwares.Count);
+                lblSoftware.Text = string.Format("{0} Software Installed on machine {1}", listOfSoftwares == null ? 0 : listOfSoftwares.Count,machineName);
 
 
                 PopulateNetworkDevices(machineName);
@@ -194,15 +201,18 @@ namespace Dashboard
         private void GetListofIPAddresses()
         {
             var macAddress = lstNetworkDevices.SelectedItems[0].SubItems[3].Text;
+            var listOfIPAddresses = ListOfNetworkDevices.Where(x => x.MACaddress == macAddress).ToList().FirstOrDefault();
             if (NetworkProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == lstView.SelectedItems[0].SubItems[1].Text)
             {
-                var listOfIPAddresses = ListOfNetworkDevices.Where(x => x.MACaddress == macAddress).ToList().FirstOrDefault();
+              
                 lstIPAddress.DataSource = listOfIPAddresses.IPAddresses;
             }
             else
             {
                 MessageBox.Show("Please login as domain admin to see list of installed software");
             }
+
+            lblIPAddresses.Text = string.Format("{0} IPAddresses found on machine {1} with MACAddress {2} ", listOfIPAddresses.IPAddresses == null ? 0 : listOfIPAddresses.IPAddresses.Length, lstView.SelectedItems[0].SubItems[1].Text,macAddress);
         }
 
 
@@ -223,7 +233,7 @@ namespace Dashboard
                 lstNetworkDevices.Items.Add(lvi);
             }
 
-
+            lblNetworkDevices.Text = string.Format("{0} NetworkDevices Installed on machine :{1}", machineDetails.ListOfNetworkDevices == null ? 0 : machineDetails.ListOfNetworkDevices.Count, lstView.SelectedItems[0].SubItems[1].Text);
         }
 
         private void lstNetworkDevices_Click(object sender, EventArgs e)

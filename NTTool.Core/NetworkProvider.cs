@@ -182,7 +182,7 @@ namespace NTTool.Core
                 objNetworkDevice.Manufacturer = mo["Manufacturer"] == null ? "Unavailble" : mo["Manufacturer"].ToString();
 
                 var ip = GetIPAddressByMacAddress(scope, objNetworkDevice.MACaddress);
-
+                objNetworkDevice.IPAddresses = ip;
 
                 objListOfNetworkDevices.Add(objNetworkDevice);
 
@@ -265,8 +265,7 @@ namespace NTTool.Core
 
             return arrIPAddress;
         }
-
-
+        
         private string[] GetIPAddressByMacAddress(ManagementScope scope,string macAddress)
         {
 

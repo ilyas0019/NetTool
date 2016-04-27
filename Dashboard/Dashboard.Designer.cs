@@ -41,12 +41,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnList = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.lblSoftware = new System.Windows.Forms.Label();
             this.lslSoftware = new System.Windows.Forms.ListBox();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.lstNetworkDevices = new System.Windows.Forms.ListView();
             this.lstIPAddress = new System.Windows.Forms.ListBox();
+            this.lblNetworkDevices = new System.Windows.Forms.Label();
+            this.lblIPAddresses = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -157,20 +158,10 @@
             this.btnList.UseVisualStyleBackColor = true;
             this.btnList.Click += new System.EventHandler(this.btnList_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(720, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(115, 13);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Installed list of Sofware";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // lblSoftware
             // 
             this.lblSoftware.AutoSize = true;
-            this.lblSoftware.Location = new System.Drawing.Point(722, 453);
+            this.lblSoftware.Location = new System.Drawing.Point(722, 14);
             this.lblSoftware.Name = "lblSoftware";
             this.lblSoftware.Size = new System.Drawing.Size(25, 13);
             this.lblSoftware.TabIndex = 15;
@@ -210,14 +201,35 @@
             this.lstIPAddress.Size = new System.Drawing.Size(502, 173);
             this.lstIPAddress.TabIndex = 17;
             // 
+            // lblNetworkDevices
+            // 
+            this.lblNetworkDevices.AutoSize = true;
+            this.lblNetworkDevices.Location = new System.Drawing.Point(24, 493);
+            this.lblNetworkDevices.Name = "lblNetworkDevices";
+            this.lblNetworkDevices.Size = new System.Drawing.Size(25, 13);
+            this.lblNetworkDevices.TabIndex = 18;
+            this.lblNetworkDevices.Text = "Info";
+            this.lblNetworkDevices.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // lblIPAddresses
+            // 
+            this.lblIPAddresses.AutoSize = true;
+            this.lblIPAddresses.Location = new System.Drawing.Point(722, 493);
+            this.lblIPAddresses.Name = "lblIPAddresses";
+            this.lblIPAddresses.Size = new System.Drawing.Size(25, 13);
+            this.lblIPAddresses.TabIndex = 19;
+            this.lblIPAddresses.Text = "Info";
+            this.lblIPAddresses.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1243, 750);
+            this.Controls.Add(this.lblIPAddresses);
+            this.Controls.Add(this.lblNetworkDevices);
             this.Controls.Add(this.lstIPAddress);
             this.Controls.Add(this.lstNetworkDevices);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.lblSoftware);
             this.Controls.Add(this.lslSoftware);
             this.Controls.Add(this.panel2);
@@ -250,12 +262,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkOnline;
         private System.Windows.Forms.ListView lstView;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblSoftware;
         private System.Windows.Forms.ListBox lslSoftware;
         private System.Windows.Forms.ImageList imgList;
         private System.Windows.Forms.ListView lstNetworkDevices;
         private System.Windows.Forms.ListBox lstIPAddress;
+        private System.Windows.Forms.Label lblNetworkDevices;
+        private System.Windows.Forms.Label lblIPAddresses;
     }
 }
 

@@ -73,6 +73,7 @@ namespace NTTool.Core
             [MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPWStr)]
             public string sv101_comment;
         };
+
         public enum PLATFORM_ID
         {
             PLATFORM_ID_DOS = 300,
@@ -217,7 +218,6 @@ namespace NTTool.Core
 
             return null;
         }
-        
 
     }
 }
