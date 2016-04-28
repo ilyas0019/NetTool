@@ -220,6 +220,16 @@ namespace Dashboard
             {
 
                 objMachine = item;
+
+
+                if (DomainProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == item.MachineName)
+                {
+                    objMachine = MachineProvider.GetInstance().GetMachineAdditionalInformation(item.MachineName, item.DomainName, objMachine);
+
+                }
+              
+
+
                 ListViewItem lvi = new ListViewItem(Enum.GetName(typeof(MachineStatus), item.MachineStatus));
                 lvi.SubItems.Add(objMachine.MachineName);
                 lvi.SubItems.Add(objMachine.IPAddress);
