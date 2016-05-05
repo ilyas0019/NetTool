@@ -1,4 +1,3 @@
-D:\Projects\NetTool\NTTool.Tests\obj\Debug\NTTool.Tests.csprojResolveAssemblyReference.cache
 D:\Projects\NetTool\NTTool.Tests\bin\Debug\NTTool.Tests.dll.config
 D:\Projects\NetTool\NTTool.Tests\bin\Debug\NTTool.Tests.dll
 D:\Projects\NetTool\NTTool.Tests\bin\Debug\NTTool.Tests.pdb
@@ -61,5 +60,6 @@ D:\Projects\NetTool\NTTool.Tests\bin\Debug\ko\System.Spatial.resources.dll
 D:\Projects\NetTool\NTTool.Tests\bin\Debug\ru\System.Spatial.resources.dll
 D:\Projects\NetTool\NTTool.Tests\bin\Debug\zh-Hans\System.Spatial.resources.dll
 D:\Projects\NetTool\NTTool.Tests\bin\Debug\zh-Hant\System.Spatial.resources.dll
+D:\Projects\NetTool\NTTool.Tests\obj\Debug\NTTool.Tests.csprojResolveAssemblyReference.cache
 D:\Projects\NetTool\NTTool.Tests\obj\Debug\NTTool.Tests.dll
 D:\Projects\NetTool\NTTool.Tests\obj\Debug\NTTool.Tests.pdb

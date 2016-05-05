@@ -66,7 +66,11 @@ namespace NTTool.Core
             ManagementScope scope = new ManagementScope();
             try
             {
-                ConnectionOptions options = new ConnectionOptions();
+                var options = new ConnectionOptions();
+                options.Authentication = AuthenticationLevel.Default;
+                options.Impersonation = ImpersonationLevel.Impersonate;
+                options.EnablePrivileges = true;
+
                 scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
                 scope.Connect();
 

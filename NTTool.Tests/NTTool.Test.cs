@@ -55,6 +55,17 @@ namespace NTTool.Tests
             objList.Add(new Models.SoftwareEntity { DisplayName = "Test" });
             return objList;
         }
+
+
+        public MachineEntity GetMachineAdditionalInformation(string machine, string domain, MachineEntity objMachine)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MachineEntity GetStorageInfoOfMachine(string machine, string domain, MachineEntity objMachine)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class MockNetworkProivder : INetworkProvider
