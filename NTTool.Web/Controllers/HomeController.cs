@@ -17,7 +17,8 @@ namespace NTTool.Controllers
 
         public ActionResult Scan()
         {
-            var domain = NetworkProvider.GetInstance().EnumerateDomains();
+            var loggedInUser = User.Identity.Name.Split('\\')[1];
+            var domain = DomainProvider.GetInstance().EnumerateDomains(loggedInUser);
             var machines = NetworkProvider.GetInstance().DomainNetworkComputers(domain.FirstOrDefault());
             return View(machines);
         }
@@ -27,7 +28,7 @@ namespace NTTool.Controllers
             ViewBag.MachineName = obj.MachineName;
             var listOfSoftwares = MachineProvider.GetInstance().GetListOfInstalledSoftwares(obj.MachineName);
 
-            obj = NetworkProvider.GetInstance().GetMachineAdditionalInformation(obj.MachineName, obj.DomainName, obj);
+            obj = MachineProvider.GetInstance().GetMachineAdditionalInformation(obj.MachineName, obj.DomainName, obj);
 
             return View(new ViewModel { MachineInfo=obj,SoftwareList=listOfSoftwares });
         }

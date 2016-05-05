@@ -15,7 +15,7 @@ namespace NTTool.Core
 
         public bool IsDomainAdministrator { get; set; }
 
-        public List<string> EnumerateDomains()
+        public List<string> EnumerateDomains(string userName)
         {
             List<string> alDomains = new List<string>();
 
@@ -30,7 +30,7 @@ namespace NTTool.Core
                 }
 
 
-                IsDomainAdministrator = IsAdministrator(alDomains.FirstOrDefault());
+                IsDomainAdministrator = IsAdministrator(alDomains.FirstOrDefault(),userName);
 
                 return alDomains;
             }
@@ -40,12 +40,12 @@ namespace NTTool.Core
             }
         }
 
-        private bool IsAdministrator(string domainName)
+        private bool IsAdministrator(string domainName,string userName)
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
 
-            return IsDomainAdmin(domainName, identity.Name.Split('\\')[1]);
+            return IsDomainAdmin(domainName, userName);
         }
 
         private bool IsDomainAdmin(string domain, string userName)

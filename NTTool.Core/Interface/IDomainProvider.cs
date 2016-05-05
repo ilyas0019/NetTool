@@ -9,7 +9,7 @@ namespace NTTool.Core
     {
         bool IsDomainAdministrator { get; set; }
 
-        List<string> EnumerateDomains();
+        List<string> EnumerateDomains(string userName);
 
     }
 }

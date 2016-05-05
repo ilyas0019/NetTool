@@ -11,6 +11,7 @@ using NTTool.Core;
 using NTTool.Models;
 using NTTool.Core.Models;
 using System.Net;
+using System.Security.Principal;
 
 namespace Dashboard
 {
@@ -65,7 +66,9 @@ namespace Dashboard
             ResetPager(0);
             if (txtFilter.Text.ToUpper().Trim() != "")
             {
+                
                 FillListOfMachines(txtFilter.Text.ToUpper());
+
             }
             else
             {
@@ -175,7 +178,7 @@ namespace Dashboard
                 lstStorage.Columns.Add("Serial Number", 100, HorizontalAlignment.Left);
                 lstStorage.Columns.Add("Free Space(GB)", 150, HorizontalAlignment.Left);
 
-
+                PopulateDomain();
             }
             catch (Exception ex)
             {
@@ -183,15 +186,27 @@ namespace Dashboard
             }
         }
 
+        private void PopulateDomain()
+        {
+
+            var loggedinUser = WindowsIdentity.GetCurrent().Name.Split('\\')[1];
+            var domains = DomainProvider.GetInstance().EnumerateDomains(loggedinUser);
+            lblDomain.Text = string.Format("Domain({0})", domains.Count);
+            lstDomain.DataSource = domains;
+
+            SelectedDomain = domains.FirstOrDefault();
+
+        }
+
         private void FillListOfMachines(string searchString = null)
         {
+            Cursor.Current = Cursors.WaitCursor;
+            
             ClearForm();
             lblSoftware.Text = "";
             lblInfo.Text = "";
 
-            var domains = DomainProvider.GetInstance().EnumerateDomains();
-            SelectedDomain = domains.FirstOrDefault();
-
+          
             var listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(SelectedDomain);
             ListOfMachines = listOfMachines;
 
@@ -206,7 +221,7 @@ namespace Dashboard
             }
 
             PopulateListView(listOfMachines);
-
+            Cursor.Current = Cursors.Default;
         }
 
         public void PopulateListView(List<MachineEntity> listOfMachines)

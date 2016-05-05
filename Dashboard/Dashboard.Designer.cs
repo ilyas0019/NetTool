@@ -48,6 +48,8 @@
             this.lblStorage = new System.Windows.Forms.Label();
             this.lstStorage = new System.Windows.Forms.ListView();
             this.lblInfo = new System.Windows.Forms.Label();
+            this.lblDomain = new System.Windows.Forms.Label();
+            this.lstDomain = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,12 +64,12 @@
             // 
             this.txtFilter.Location = new System.Drawing.Point(100, 15);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(240, 20);
+            this.txtFilter.Size = new System.Drawing.Size(102, 20);
             this.txtFilter.TabIndex = 9;
             // 
             // btnFilter
             // 
-            this.btnFilter.Location = new System.Drawing.Point(350, 15);
+            this.btnFilter.Location = new System.Drawing.Point(208, 13);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(75, 23);
             this.btnFilter.TabIndex = 10;
@@ -80,9 +82,9 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.btnFilter);
             this.panel1.Controls.Add(this.txtFilter);
-            this.panel1.Location = new System.Drawing.Point(14, 4);
+            this.panel1.Location = new System.Drawing.Point(395, 30);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(456, 51);
+            this.panel1.Size = new System.Drawing.Size(300, 51);
             this.panel1.TabIndex = 11;
             // 
             // label3
@@ -160,9 +162,9 @@
             // 
             // lstView
             // 
-            this.lstView.Location = new System.Drawing.Point(14, 82);
+            this.lstView.Location = new System.Drawing.Point(14, 112);
             this.lstView.Name = "lstView";
-            this.lstView.Size = new System.Drawing.Size(683, 327);
+            this.lstView.Size = new System.Drawing.Size(683, 297);
             this.lstView.TabIndex = 24;
             this.lstView.UseCompatibleStateImageBehavior = false;
             this.lstView.View = System.Windows.Forms.View.Details;
@@ -171,7 +173,7 @@
             // chkOnline
             // 
             this.chkOnline.AutoSize = true;
-            this.chkOnline.Location = new System.Drawing.Point(554, 21);
+            this.chkOnline.Location = new System.Drawing.Point(395, 87);
             this.chkOnline.Name = "chkOnline";
             this.chkOnline.Size = new System.Drawing.Size(129, 17);
             this.chkOnline.TabIndex = 23;
@@ -180,7 +182,7 @@
             // 
             // btnList
             // 
-            this.btnList.Location = new System.Drawing.Point(554, 54);
+            this.btnList.Location = new System.Drawing.Point(554, 83);
             this.btnList.Name = "btnList";
             this.btnList.Size = new System.Drawing.Size(141, 23);
             this.btnList.TabIndex = 20;
@@ -210,12 +212,30 @@
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(16, 64);
+            this.lblInfo.Location = new System.Drawing.Point(12, 93);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(25, 13);
             this.lblInfo.TabIndex = 27;
             this.lblInfo.Text = "Info";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // lblDomain
+            // 
+            this.lblDomain.AutoSize = true;
+            this.lblDomain.Location = new System.Drawing.Point(18, 14);
+            this.lblDomain.Name = "lblDomain";
+            this.lblDomain.Size = new System.Drawing.Size(25, 13);
+            this.lblDomain.TabIndex = 29;
+            this.lblDomain.Text = "Info";
+            this.lblDomain.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // lstDomain
+            // 
+            this.lstDomain.FormattingEnabled = true;
+            this.lstDomain.Location = new System.Drawing.Point(15, 30);
+            this.lstDomain.Name = "lstDomain";
+            this.lstDomain.Size = new System.Drawing.Size(363, 56);
+            this.lstDomain.TabIndex = 28;
             // 
             // Dashboard
             // 
@@ -223,6 +243,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1240, 657);
+            this.Controls.Add(this.lblDomain);
+            this.Controls.Add(this.lstDomain);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.lblStorage);
             this.Controls.Add(this.lstStorage);
@@ -269,6 +291,8 @@
         private System.Windows.Forms.Label lblStorage;
         private System.Windows.Forms.ListView lstStorage;
         private System.Windows.Forms.Label lblInfo;
+        private System.Windows.Forms.Label lblDomain;
+        private System.Windows.Forms.ListBox lstDomain;
     }
 }
 
