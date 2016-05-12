@@ -202,7 +202,6 @@ namespace NTTool.Core
             return macAddress;
         }
 
-
         public MachineEntity GetStorageInfoOfMachine(string machine, string domain, MachineEntity objMachine)
         {
 
@@ -250,7 +249,7 @@ namespace NTTool.Core
         private string FreeSpaceInGB(string freeSpace)
         {
 
-            return ((Convert.ToDouble(freeSpace) / 1024/1024)/1024).ToString("0.00");
+            return ((Convert.ToDouble(freeSpace) / 1024 / 1024) / 1024).ToString("0.00");
 
         }
 
@@ -263,48 +262,8 @@ namespace NTTool.Core
             return obj;
         }
 
-        //public MachineEntity GetLoggedOnUserInfo(string machine, string domain, MachineEntity objMachine)
-        //{
-
-        //    ManagementScope scope = new ManagementScope();
-        //    try
-        //    {
-        //        ConnectionOptions options = new ConnectionOptions();
-        //        scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
-        //        scope.Connect();
-
-        //        SelectQuery query = new SelectQuery("SELECT * FROM Win32_LoggedOnUser");
-
-        //        ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-
-        //        using (ManagementObjectCollection queryCollection = searcher.Get())
-        //        {
-        //            foreach (ManagementObject m in queryCollection)
-        //            {
-
-        //                objMachine.LoggedInUser = m["Antecedent"] == null ? "Unavailble" : m["Antecedent"].ToString();
-        //            }
-
-        //        }
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-
-        //        return objMachine;
-        //    }
-
-        //    return objMachine;
-        //}
-
-
     }
 }
 
 
-/*
- * if (Dns.GetHostName() == objMachine.MachineName || IsDomainAdministrator)
-                    {
-                        objMachine = GetMachineAdditionalInformation(objMachine.MachineName, domainName, objMachine);
-                    }
- */
+

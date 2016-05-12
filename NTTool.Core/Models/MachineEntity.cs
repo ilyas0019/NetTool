@@ -14,6 +14,8 @@ namespace NTTool.Models
 
         public string DomainName { get; set; }
 
+        public string  DNSHostName { get; set; }
+
         public string MachineName { get; set; }
 
         public string IPAddress { get; set; }
@@ -34,7 +36,7 @@ namespace NTTool.Models
 
         public MachineStatus MachineStatus { get; set; }
 
-        public DirectoryEntry MachineAdInfo { get; set; }
+        //public DirectoryEntry MachineAdInfo { get; set; }
 
         public List<NetworkDevices> ListOfNetworkDevices { get; set; }
 

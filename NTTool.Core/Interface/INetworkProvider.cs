@@ -10,11 +10,7 @@ namespace NTTool.Core
 {
     public interface INetworkProvider
     {
-        //bool IsDomainAdministrator { get; set; }
 
-        List<MachineEntity> DomainNetworkComputers(string domainName);
-
-        List<MachineEntity> NetworkComputers();
-
+        List<MachineEntity> DomainNetworkComputers(string domainName, bool onLineMachinesOnly=false);
     }
 }

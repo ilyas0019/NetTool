@@ -31,18 +31,22 @@ namespace Dashboard
 
         private void btnList_Click(object sender, EventArgs e)
         {
+            ScanNetwork();
+        }
+
+        private void ScanNetwork()
+        {
+            Application.DoEvents();
             ResetPager(0);
             try
             {
                 FillListOfMachines();
-
             }
             catch (Exception ex)
             {
                 ResetPager(0);
                 MessageBox.Show(ex.Message);
             }
-
         }
 
         private void ClearForm()
@@ -66,7 +70,7 @@ namespace Dashboard
             ResetPager(0);
             if (txtFilter.Text.ToUpper().Trim() != "")
             {
-                
+
                 FillListOfMachines(txtFilter.Text.ToUpper());
 
             }
@@ -201,13 +205,17 @@ namespace Dashboard
         private void FillListOfMachines(string searchString = null)
         {
             Cursor.Current = Cursors.WaitCursor;
-            
+
             ClearForm();
             lblSoftware.Text = "";
             lblInfo.Text = "";
+            lblScanning.Text = string.Format("Scanning stared at {0}", DateTime.Now);
+            var listOfMachines = new List<MachineEntity>();
 
-          
-            var listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(SelectedDomain);
+            listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(SelectedDomain, chkOnline.Checked);
+
+
+
             ListOfMachines = listOfMachines;
 
             if (!string.IsNullOrEmpty(searchString))
@@ -215,13 +223,9 @@ namespace Dashboard
                 listOfMachines = listOfMachines.Where(x => x.MachineName.Contains(searchString)).ToList();
             }
 
-            if (chkOnline.Checked)
-            {
-                listOfMachines = listOfMachines.Where(x => x.MachineStatus == MachineStatus.Online).ToList();
-            }
-
             PopulateListView(listOfMachines);
             Cursor.Current = Cursors.Default;
+            lblScanning.Text = string.Format(lblScanning.Text + "- Ended at {0}", DateTime.Now);
         }
 
         public void PopulateListView(List<MachineEntity> listOfMachines)
@@ -233,6 +237,8 @@ namespace Dashboard
             MachineEntity objMachine = new MachineEntity();
 
             ResetPager(listOfMachines.Count);
+            var os = string.Empty;
+            var osVersion = string.Empty;
 
             foreach (var item in listOfMachines)
             {
@@ -240,10 +246,13 @@ namespace Dashboard
                 objMachine = item;
 
 
-                if (DomainProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == item.MachineName)
-                {
-                    objMachine = MachineProvider.GetInstance().GetMachineAdditionalInformation(item.MachineName, item.DomainName, objMachine);
-                }
+                //if (DomainProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == item.MachineName)
+                //{
+                //    objMachine = MachineProvider.GetInstance().GetMachineAdditionalInformation(item.MachineName, item.DomainName, objMachine);
+                //}
+
+                //os = objMachine.MachineAdInfo.Properties["operatingSystem"] == null ? "NA" : objMachine.MachineAdInfo.Properties["operatingSystem"].Value.ToString();
+
 
                 ListViewItem lvi = new ListViewItem(Enum.GetName(typeof(MachineStatus), item.MachineStatus));
                 lvi.SubItems.Add(objMachine.MachineName);
@@ -323,7 +332,16 @@ namespace Dashboard
             lblNetworkDevices.Text = string.Format("{0} NetworkDevices Installed on machine :{1}", machineDetails.ListOfNetworkDevices == null ? 0 : machineDetails.ListOfNetworkDevices.Count, lstView.SelectedItems[0].SubItems[1].Text);
         }
 
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void scanOnlineOnly_Click(object sender, EventArgs e)
+        {
+            chkOnline.Checked = true;
+            ScanNetwork();
+        }
 
     }
 }

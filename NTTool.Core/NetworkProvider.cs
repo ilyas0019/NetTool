@@ -14,18 +14,18 @@ using System.Threading.Tasks;
 using System.Linq;
 using NTTool.Core.Models;
 using System.Security.Principal;
+using System.Diagnostics;
 
 namespace NTTool.Core
 {
     public class NetworkProvider : INetworkProvider
     {
+        [DllImport("iphlpapi.dll", ExactSpelling = true)]
+        public static extern int SendARP(int DestIP, int SrcIP, [Out] byte[] pMacAddr, ref int PhyAddrLen);
+
         private static INetworkProvider obj;
 
-        //public bool IsDomainAdministrator { get; set; }
-
-     
-
-        public List<MachineEntity> DomainNetworkComputers(string domainName)
+        public List<MachineEntity> DomainNetworkComputers(string domainName, bool onLineMachinesOnly=false)
         {
             List<MachineEntity> ComputerNames = new List<MachineEntity>();
 
@@ -39,26 +39,39 @@ namespace NTTool.Core
                 MachineEntity objMachine = null;
                 MachineEntity objOnlineMachine = null;
                 DirectoryEntry machineAdInfo;
-                List<MachineEntity> listofOnlineMachines = NetworkComputers();
+                MachineEntity obj = null;
+                List<MachineEntity> listofOnlineMachines = DomainOnlineComputers(domainName);
                 foreach (SearchResult resEnt in mySearcher.FindAll())
                 {
                     machineAdInfo = resEnt.GetDirectoryEntry();
 
                     objMachine = new MachineEntity();
                     objMachine.MachineStatus = MachineStatus.Offline;
-                    objMachine.MachineName = machineAdInfo.Name.Replace("CN=", "");
+                    objMachine.MachineName = machineAdInfo.Properties["cn"].Value.ToString();
+                    objMachine.OpratingSystem = machineAdInfo.Properties["operatingSystem"].Value == null ? "NA" : machineAdInfo.Properties["operatingSystem"].Value.ToString();
+                    objMachine.OpratingSystemVersion = machineAdInfo.Properties["operatingSystemVersion"].Value == null ? "NA" : machineAdInfo.Properties["operatingSystemVersion"].Value.ToString();
+                    objMachine.DNSHostName = machineAdInfo.Properties["dNSHostName"].Value.ToString();
                     objMachine.DomainName = domainName;
-                    objMachine.MachineAdInfo = machineAdInfo;
+
                     objOnlineMachine = listofOnlineMachines.FirstOrDefault(x => x.MachineName == objMachine.MachineName);
 
                     if (objOnlineMachine != null)
                     {
                         objMachine.MachineStatus = MachineStatus.Online;
-                        objMachine.IPAddress = listofOnlineMachines.Where(x => x.MachineName == objMachine.MachineName).FirstOrDefault().IPAddress;
+                        obj =  listofOnlineMachines.Where(x => x.MachineName == objMachine.MachineName).FirstOrDefault();
+                        objMachine.IPAddress = obj.IPAddress;
+                        objMachine.MachineMACAddress = obj.MachineMACAddress;
+                        if (onLineMachinesOnly)
+                        {
+                            ComputerNames.Add(objMachine);
+                        }
 
                     }
 
-                    ComputerNames.Add(objMachine);
+                    if (!onLineMachinesOnly)
+                    {
+                        ComputerNames.Add(objMachine);
+                    }
                 }
 
                 mySearcher.Dispose();
@@ -72,97 +85,74 @@ namespace NTTool.Core
             }
         }
 
-        public List<MachineEntity> NetworkComputers()
+        private List<MachineEntity> DomainOnlineComputers(string domainName)
+        {
+            var ComputerNames = new List<MachineEntity>();
+            try
+            {
+                DirectoryEntry DomainEntry = new DirectoryEntry("WinNT://" + domainName);
+                DomainEntry.Children.SchemaFilter.Add("computer");
+                Parallel.ForEach(DomainEntry.Children.OfType<DirectoryEntry>(), (DirectoryEntry machine) =>
+                {
+                    ProcessMachine(machine, ComputerNames);
+                });
+
+                return ComputerNames;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        private void ProcessMachine(DirectoryEntry machine, List<MachineEntity> computerNames)
+        {
+            MachineEntity machineEntity = new MachineEntity();
+            string[] Ipaddr = new string[3];
+            System.Net.IPHostEntry Tempaddr = null;
+            byte[] ab;
+            int len;
+            int r;
+            string mac = string.Empty;
+
+            Ipaddr[0] = machine.Name;
+
+            try
+            {
+                Tempaddr = (System.Net.IPHostEntry)Dns.GetHostEntry(machine.Name);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
+            foreach (IPAddress TempA in Tempaddr.AddressList)
+            {
+                Ipaddr[1] = TempA.ToString();
+                ab = new byte[6];
+                len = ab.Length;
+                r = SendARP(TempA.GetHashCode(), 0, ab, ref len);
+                mac = BitConverter.ToString(ab, 0, 6);
+                if (mac == "00-00-00-00-00-00")
+                {
+                    return;
+                }
+                Ipaddr[2] = mac;
+            }
+
+            machineEntity.MachineStatus = MachineStatus.Online;
+            machineEntity.IPAddress = Ipaddr[1];
+            machineEntity.MachineName = machine.Name;
+            machineEntity.MachineMACAddress = Ipaddr[2];
+
+            computerNames.Add(machineEntity);
+        }
+
+        private List<MachineEntity> NetworkComputers()
         {
             return NetApi32.GetNetWorkMachines();
         }
-
-        //public MachineEntity GetMachineAdditionalInformation(string machine, string domain, MachineEntity objMachine)
-        //{
-
-        //    ManagementScope scope = new ManagementScope();
-        //    try
-        //    {
-        //        ConnectionOptions options = new ConnectionOptions();
-        //        scope = new ManagementScope(@"\\" + machine + "\\root\\CIMV2", options);
-        //        scope.Connect();
-
-        //        var macAddress = GetMACAddress(scope);
-
-        //        var ipaddresses = GetIPAddresses(scope);
-
-        //        var networkDevices = GetNetworkDevices(scope);
-
-        //        objMachine.IPAddresses = ipaddresses;
-
-        //        objMachine.ListOfNetworkDevices = networkDevices;
-
-
-        //        SelectQuery query = new SelectQuery("SELECT * FROM Win32_OperatingSystem");
-
-        //        ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-
-        //        using (ManagementObjectCollection queryCollection = searcher.Get())
-        //        {
-        //            foreach (ManagementObject m in queryCollection)
-        //            {
-        //                objMachine.MachineName = m["csname"].ToString();
-        //                objMachine.OpratingSystem = m["Caption"].ToString();
-        //                objMachine.OpratingSystemVersion = m["Version"].ToString();
-        //                objMachine.SystemDirectory = m["WindowsDirectory"].ToString();
-        //                objMachine.Manufacturer = m["Manufacturer"].ToString();
-        //                objMachine.MachineMACAddress = macAddress;
-        //            }
-
-        //        }
-
-
-
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-
-        //        return objMachine;
-        //    }
-
-        //    return objMachine;
-        //}
-
-        //private List<NetworkDevices> GetNetworkDevices(ManagementScope scope)
-        //{
-        //    ManagementObjectSearcher objSearcher;
-        //    ManagementObjectCollection objColl;
-        //    ObjectQuery objQuery;
-        //    List<NetworkDevices> objListOfNetworkDevices = new List<NetworkDevices>(); ;
-        //    ConnectionOptions connOpts = new ConnectionOptions();
-        //    objQuery = new ObjectQuery("SELECT * FROM Win32_NetworkAdapter WHERE AdapterTypeID <> NULL");
-        //    scope.Connect();
-
-        //    objSearcher = new ManagementObjectSearcher(scope, objQuery);
-        //    objSearcher.Options.Timeout = new TimeSpan(0, 0, 0, 0, 7000);
-        //    objColl = objSearcher.Get();
-        //    NetworkDevices objNetworkDevice;
-        //    foreach (ManagementObject mo in objColl)
-        //    {
-        //        objNetworkDevice = new NetworkDevices();
-
-        //        objNetworkDevice.DeviceID = mo["DeviceID"] == null ? "Unavailble" : mo["DeviceID"].ToString();
-        //        objNetworkDevice.Adaptertype = mo["AdapterType"] == null ? "Unavailble" : mo["AdapterType"].ToString();
-        //        objNetworkDevice.Description = mo["Description"] == null ? "Unavailble" : mo["Description"].ToString();
-        //        objNetworkDevice.MACaddress = mo["MACAddress"] == null ? "Unavailble" : mo["MACAddress"].ToString();
-        //        objNetworkDevice.Manufacturer = mo["Manufacturer"] == null ? "Unavailble" : mo["Manufacturer"].ToString();
-
-        //        var ip = GetIPAddressByMacAddress(scope, objNetworkDevice.MACaddress);
-        //        objNetworkDevice.IPAddresses = ip;
-
-        //        objListOfNetworkDevices.Add(objNetworkDevice);
-
-        //    }
-
-        //    return objListOfNetworkDevices;
-
-        //}
 
         public static INetworkProvider GetInstance()
         {
@@ -172,86 +162,6 @@ namespace NTTool.Core
             }
             return obj;
         }
-
-        //private bool IsAdministrator(string domainName)
-        //{
-        //    WindowsIdentity identity = WindowsIdentity.GetCurrent();
-        //    WindowsPrincipal principal = new WindowsPrincipal(identity);
-
-        //    return IsDomainAdmin(domainName, identity.Name.Split('\\')[1]);
-        //}
-
-        //private bool IsDomainAdmin(string domain, string userName)
-        //{
-        //    string adminDn = GetAdminDn(domain);
-        //    SearchResult result = (new DirectorySearcher(
-        //        new DirectoryEntry("LDAP://" + domain),
-        //        "(&(objectCategory=user)(samAccountName=" + userName + "))",
-        //        new[] { "memberOf" })).FindOne();
-        //    return result.Properties["memberOf"].Contains(adminDn);
-        //}
-
-        //private string GetAdminDn(string domain)
-        //{
-        //    return (string)(new DirectorySearcher(
-        //        new DirectoryEntry("LDAP://" + domain),
-        //        "(&(objectCategory=group)(cn=Domain Admins))")
-        //        .FindOne().Properties["distinguishedname"][0]);
-        //}
-
-        //private string GetMACAddress(ManagementScope scope)
-        //{
-        //    SelectQuery query = new SelectQuery("Select * FROM Win32_NetworkAdapterConfiguration");
-        //    ManagementObjectSearcher objMOS = new ManagementObjectSearcher(scope, query);
-        //    ManagementObjectCollection objMOC = objMOS.Get();
-        //    string macAddress = String.Empty;
-        //    foreach (ManagementObject objMO in objMOC)
-        //    {
-        //        object tempMacAddrObj = objMO["MacAddress"];
-
-        //        if (tempMacAddrObj == null)
-        //        {
-        //            continue;
-        //        }
-        //        if (macAddress == String.Empty)
-        //        {
-        //            macAddress = tempMacAddrObj.ToString();
-        //        }
-        //        objMO.Dispose();
-        //    }
-
-        //    return macAddress;
-        //}
-
-        //private string[] GetIPAddresses(ManagementScope scope)
-        //{
-
-        //    SelectQuery query = new SelectQuery("SELECT IPAddress FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'TRUE'");
-
-        //    ManagementObjectSearcher NetworkSearcher = new ManagementObjectSearcher(scope, query);
-        //    string[] arrIPAddress = null;
-        //    foreach (ManagementObject NetworkObj in NetworkSearcher.Get())
-        //    {
-        //        arrIPAddress = (string[])(NetworkObj["IPAddress"]);
-        //    }
-
-        //    return arrIPAddress;
-        //}
-        
-        //private string[] GetIPAddressByMacAddress(ManagementScope scope,string macAddress)
-        //{
-
-        //    SelectQuery query = new SelectQuery("SELECT IPAddress FROM Win32_NetworkAdapterConfiguration WHERE MACAddress = '"+ macAddress +"'");
-
-        //    ManagementObjectSearcher NetworkSearcher = new ManagementObjectSearcher(scope, query);
-        //    string[] arrIPAddress = null;
-        //    foreach (ManagementObject NetworkObj in NetworkSearcher.Get())
-        //    {
-        //        arrIPAddress = (string[])(NetworkObj["IPAddress"]);
-        //    }
-
-        //    return arrIPAddress;
-        //}
 
     }
 }
