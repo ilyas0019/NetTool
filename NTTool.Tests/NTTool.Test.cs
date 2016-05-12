@@ -108,6 +108,11 @@ namespace NTTool.Tests
             get;
             set;
         }
+
+        public List<MachineEntity> DomainNetworkComputers(string domainName, bool onLineMachinesOnly = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -3,4 +3,3 @@ D:\Projects\NetTool\HitnTrail\bin\Debug\HitnTrail.exe
 D:\Projects\NetTool\HitnTrail\bin\Debug\HitnTrail.pdb
 D:\Projects\NetTool\HitnTrail\obj\Debug\HitnTrail.exe
 D:\Projects\NetTool\HitnTrail\obj\Debug\HitnTrail.pdb
-D:\Projects\NetTool\HitnTrail\obj\Debug\HitnTrail.csprojResolveAssemblyReference.cache
