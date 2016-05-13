@@ -36,43 +36,15 @@ namespace NTTool.Core
                 mySearcher.Filter = ("(objectClass=computer)");
                 mySearcher.SizeLimit = int.MaxValue;
                 mySearcher.PageSize = int.MaxValue;
-                MachineEntity objMachine = null;
-                MachineEntity objOnlineMachine = null;
-                DirectoryEntry machineAdInfo;
-                MachineEntity obj = null;
+              
                 List<MachineEntity> listofOnlineMachines = DomainOnlineComputers(domainName);
-                foreach (SearchResult resEnt in mySearcher.FindAll())
+
+                var searchResultCollection = mySearcher.FindAll().Cast<SearchResult>().ToList();
+
+                Parallel.ForEach(searchResultCollection, (SearchResult resEnt) =>
                 {
-                    machineAdInfo = resEnt.GetDirectoryEntry();
-
-                    objMachine = new MachineEntity();
-                    objMachine.MachineStatus = MachineStatus.Offline;
-                    objMachine.MachineName = machineAdInfo.Properties["cn"].Value.ToString();
-                    objMachine.OpratingSystem = machineAdInfo.Properties["operatingSystem"].Value == null ? "NA" : machineAdInfo.Properties["operatingSystem"].Value.ToString();
-                    objMachine.OpratingSystemVersion = machineAdInfo.Properties["operatingSystemVersion"].Value == null ? "NA" : machineAdInfo.Properties["operatingSystemVersion"].Value.ToString();
-                    objMachine.DNSHostName = machineAdInfo.Properties["dNSHostName"].Value.ToString();
-                    objMachine.DomainName = domainName;
-
-                    objOnlineMachine = listofOnlineMachines.FirstOrDefault(x => x.MachineName == objMachine.MachineName);
-
-                    if (objOnlineMachine != null)
-                    {
-                        objMachine.MachineStatus = MachineStatus.Online;
-                        obj =  listofOnlineMachines.Where(x => x.MachineName == objMachine.MachineName).FirstOrDefault();
-                        objMachine.IPAddress = obj.IPAddress;
-                        objMachine.MachineMACAddress = obj.MachineMACAddress;
-                        if (onLineMachinesOnly)
-                        {
-                            ComputerNames.Add(objMachine);
-                        }
-
-                    }
-
-                    if (!onLineMachinesOnly)
-                    {
-                        ComputerNames.Add(objMachine);
-                    }
-                }
+                    ProcessMachines(resEnt, ComputerNames, listofOnlineMachines, domainName, onLineMachinesOnly);
+                });
 
                 mySearcher.Dispose();
                 entry.Dispose();
@@ -82,6 +54,46 @@ namespace NTTool.Core
             {
 
                 throw;
+            }
+        }
+
+        private void ProcessMachines(SearchResult resEnt, List<MachineEntity> ComputerNames, List<MachineEntity> listofOnlineMachines, string domainName, bool onLineMachinesOnly = false)
+        {
+            MachineEntity objMachine = null;
+            MachineEntity objOnlineMachine = null;
+            DirectoryEntry machineAdInfo;
+
+            machineAdInfo = resEnt.GetDirectoryEntry();
+
+            objMachine = new MachineEntity();
+            objMachine.MachineStatus = MachineStatus.Offline;
+            objMachine.MachineName = machineAdInfo.Properties["cn"].Value.ToString();
+            objMachine.OpratingSystem = machineAdInfo.Properties["operatingSystem"].Value == null ? "NA" : machineAdInfo.Properties["operatingSystem"].Value.ToString();
+            objMachine.OpratingSystemVersion = machineAdInfo.Properties["operatingSystemVersion"].Value == null ? "NA" : machineAdInfo.Properties["operatingSystemVersion"].Value.ToString();
+            objMachine.DNSHostName = machineAdInfo.Properties["dNSHostName"].Value.ToString();
+            objMachine.OpratingSystemServicePack = machineAdInfo.Properties["operatingSystemServicePack"].Value ==null ? "NA": machineAdInfo.Properties["operatingSystemServicePack"].Value.ToString();
+            
+            objMachine.DomainName = domainName;
+
+            //objOnlineMachine = listofOnlineMachines.FirstOrDefault(x => x.MachineName == objMachine.MachineName);
+            objOnlineMachine = listofOnlineMachines.Where(x => x.MachineName == objMachine.MachineName).FirstOrDefault();
+
+            if (objOnlineMachine != null)
+            {
+                objMachine.MachineStatus = MachineStatus.Online;
+
+                objMachine.IPAddress = objOnlineMachine.IPAddress;
+                objMachine.MachineMACAddress = objOnlineMachine.MachineMACAddress;
+                if (onLineMachinesOnly)
+                {
+                    ComputerNames.Add(objMachine);
+                }
+
+            }
+
+            if (!onLineMachinesOnly)
+            {
+                ComputerNames.Add(objMachine);
             }
         }
 

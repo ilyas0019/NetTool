@@ -15,8 +15,12 @@ using System.Security.Principal;
 
 namespace Dashboard
 {
+    
+    public delegate List<MachineEntity> FillNetoworkMachineList(string domain, bool onLineMachine);
+
     public partial class Dashboard : Form
     {
+        
 
         public List<MachineEntity> ListOfMachines { get; set; }
         public List<NetworkDevices> ListOfNetworkDevices { get; set; }
@@ -40,7 +44,7 @@ namespace Dashboard
             ResetPager(0);
             try
             {
-                FillListOfMachines();
+               FillListOfMachines();
             }
             catch (Exception ex)
             {
@@ -156,10 +160,10 @@ namespace Dashboard
                 lstView.Columns.Add("Machine Status", 100, HorizontalAlignment.Left);
                 lstView.Columns.Add("Machine Name", 100, HorizontalAlignment.Left);
                 lstView.Columns.Add("Machine IP", 80, HorizontalAlignment.Left);
-                lstView.Columns.Add("Machine MAC", 80, HorizontalAlignment.Left);
-                lstView.Columns.Add("Machine OS", 100, HorizontalAlignment.Left);
-                lstView.Columns.Add("Machine OS Version", 150, HorizontalAlignment.Left);
-                lstView.Columns.Add("Loggedin User", 150, HorizontalAlignment.Left);
+                lstView.Columns.Add("Machine MAC", 100, HorizontalAlignment.Left);
+                lstView.Columns.Add("Machine OS", 130, HorizontalAlignment.Left);
+                lstView.Columns.Add("OS Version", 70, HorizontalAlignment.Left);
+                lstView.Columns.Add("System Service Pack", 150, HorizontalAlignment.Left);
 
 
 
@@ -210,22 +214,29 @@ namespace Dashboard
             lblSoftware.Text = "";
             lblInfo.Text = "";
             lblScanning.Text = string.Format("Scanning stared at {0}", DateTime.Now);
-            var listOfMachines = new List<MachineEntity>();
 
-            listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(SelectedDomain, chkOnline.Checked);
+            ListOfMachines= GetNetworkMachineData(searchString);
 
+            PopulateListView(ListOfMachines);
+            
+            Cursor.Current = Cursors.Default;
+            lblScanning.Text = string.Format(lblScanning.Text + "- Ended at {0}", DateTime.Now);
+        }
 
+        private List<MachineEntity> GetNetworkMachineData(string searchString = null)
+        {
+            //FillNetoworkMachineList methodInvoker=new FillNetoworkMachineList(NetworkProvider.GetInstance().DomainNetworkComputers);
+            //IAsyncResult result= methodInvoker.BeginInvoke(SelectedDomain, chkOnline.Checked,null,null);
+            //listOfMachines= methodInvoker.EndInvoke(result);
 
-            ListOfMachines = listOfMachines;
-
+            var listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(SelectedDomain, chkOnline.Checked);
+           
             if (!string.IsNullOrEmpty(searchString))
             {
                 listOfMachines = listOfMachines.Where(x => x.MachineName.Contains(searchString)).ToList();
             }
 
-            PopulateListView(listOfMachines);
-            Cursor.Current = Cursors.Default;
-            lblScanning.Text = string.Format(lblScanning.Text + "- Ended at {0}", DateTime.Now);
+            return listOfMachines;
         }
 
         public void PopulateListView(List<MachineEntity> listOfMachines)
@@ -245,22 +256,13 @@ namespace Dashboard
 
                 objMachine = item;
 
-
-                //if (DomainProvider.GetInstance().IsDomainAdministrator || Dns.GetHostName() == item.MachineName)
-                //{
-                //    objMachine = MachineProvider.GetInstance().GetMachineAdditionalInformation(item.MachineName, item.DomainName, objMachine);
-                //}
-
-                //os = objMachine.MachineAdInfo.Properties["operatingSystem"] == null ? "NA" : objMachine.MachineAdInfo.Properties["operatingSystem"].Value.ToString();
-
-
                 ListViewItem lvi = new ListViewItem(Enum.GetName(typeof(MachineStatus), item.MachineStatus));
                 lvi.SubItems.Add(objMachine.MachineName);
                 lvi.SubItems.Add(objMachine.IPAddress);
                 lvi.SubItems.Add(objMachine.MachineMACAddress);
                 lvi.SubItems.Add(objMachine.OpratingSystem);
                 lvi.SubItems.Add(objMachine.OpratingSystemVersion);
-                lvi.SubItems.Add(objMachine.LoggedInUser);
+                lvi.SubItems.Add(objMachine.OpratingSystemServicePack);
                 if (objMachine.MachineStatus == MachineStatus.Online)
                 {
                     lvi.ImageIndex = 1;
@@ -330,11 +332,6 @@ namespace Dashboard
             }
 
             lblNetworkDevices.Text = string.Format("{0} NetworkDevices Installed on machine :{1}", machineDetails.ListOfNetworkDevices == null ? 0 : machineDetails.ListOfNetworkDevices.Count, lstView.SelectedItems[0].SubItems[1].Text);
-        }
-
-        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void scanOnlineOnly_Click(object sender, EventArgs e)

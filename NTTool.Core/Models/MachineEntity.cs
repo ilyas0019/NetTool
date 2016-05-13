@@ -30,13 +30,13 @@ namespace NTTool.Models
 
         public string OpratingSystemVersion { get; set; }
 
+        public string OpratingSystemServicePack { get; set; }
+        
         public string Manufacturer { get; set; }
 
         public string MachineMACAddress { get; set; }
 
         public MachineStatus MachineStatus { get; set; }
-
-        //public DirectoryEntry MachineAdInfo { get; set; }
 
         public List<NetworkDevices> ListOfNetworkDevices { get; set; }
 
