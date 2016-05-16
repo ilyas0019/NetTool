@@ -75,7 +75,6 @@ namespace NTTool.Core
             
             objMachine.DomainName = domainName;
 
-            //objOnlineMachine = listofOnlineMachines.FirstOrDefault(x => x.MachineName == objMachine.MachineName);
             objOnlineMachine = listofOnlineMachines.Where(x => x.MachineName == objMachine.MachineName).FirstOrDefault();
 
             if (objOnlineMachine != null)

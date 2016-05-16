@@ -44,23 +44,26 @@
             this.lblInfo = new System.Windows.Forms.Label();
             this.lblDomain = new System.Windows.Forms.Label();
             this.lstDomain = new System.Windows.Forms.ListBox();
-            this.lblScanning = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.txtFilter = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.pgInfo = new System.Windows.Forms.ToolStripProgressBar();
             this.btnFilter = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnList = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scanNetworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scanOnlineOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblScanning = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.pgInfo = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblSoftware
@@ -139,7 +142,7 @@
             // chkOnline
             // 
             this.chkOnline.AutoSize = true;
-            this.chkOnline.Location = new System.Drawing.Point(409, 24);
+            this.chkOnline.Location = new System.Drawing.Point(383, 56);
             this.chkOnline.Name = "chkOnline";
             this.chkOnline.Size = new System.Drawing.Size(129, 17);
             this.chkOnline.TabIndex = 23;
@@ -193,16 +196,6 @@
             this.lstDomain.Size = new System.Drawing.Size(363, 56);
             this.lstDomain.TabIndex = 28;
             // 
-            // lblScanning
-            // 
-            this.lblScanning.AutoSize = true;
-            this.lblScanning.Location = new System.Drawing.Point(572, 24);
-            this.lblScanning.Name = "lblScanning";
-            this.lblScanning.Size = new System.Drawing.Size(61, 13);
-            this.lblScanning.TabIndex = 30;
-            this.lblScanning.Text = "Scanning...";
-            this.lblScanning.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -212,7 +205,6 @@
             this.txtFilter,
             this.btnFilter,
             this.toolStripSeparator2,
-            this.pgInfo,
             this.btnList,
             this.toolStripSeparator4});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
@@ -243,16 +235,6 @@
             this.txtFilter.Size = new System.Drawing.Size(100, 25);
             this.txtFilter.ToolTipText = "Search Machine ";
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // pgInfo
-            // 
-            this.pgInfo.Name = "pgInfo";
-            this.pgInfo.Size = new System.Drawing.Size(100, 22);
-            // 
             // btnFilter
             // 
             this.btnFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -263,6 +245,11 @@
             this.btnFilter.Text = "toolStripButton3";
             this.btnFilter.ToolTipText = "Search Machine ";
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // btnList
             // 
@@ -297,7 +284,6 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.fileToolStripMenuItem.Text = "Scan";
-          
             // 
             // scanNetworkToolStripMenuItem
             // 
@@ -314,13 +300,45 @@
             this.scanOnlineOnly.ToolTipText = "Scan Online Only";
             this.scanOnlineOnly.Click += new System.EventHandler(this.scanOnlineOnly_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblScanning,
+            this.toolStripSplitButton1,
+            this.pgInfo});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 635);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1240, 22);
+            this.statusStrip1.TabIndex = 34;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lblScanning
+            // 
+            this.lblScanning.Name = "lblScanning";
+            this.lblScanning.Size = new System.Drawing.Size(65, 17);
+            this.lblScanning.Text = "Scanning...";
+            // 
+            // toolStripSplitButton1
+            // 
+            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
+            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(32, 20);
+            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
+            // 
+            // pgInfo
+            // 
+            this.pgInfo.Name = "pgInfo";
+            this.pgInfo.Size = new System.Drawing.Size(1000, 16);
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1240, 657);
-            this.Controls.Add(this.lblScanning);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.chkOnline);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -346,6 +364,8 @@
             this.toolStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -367,14 +387,12 @@
         private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Label lblDomain;
         private System.Windows.Forms.ListBox lstDomain;
-        private System.Windows.Forms.Label lblScanning;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnList;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripTextBox txtFilter;
         private System.Windows.Forms.ToolStripButton btnFilter;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripProgressBar pgInfo;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
@@ -382,6 +400,10 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scanNetworkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scanOnlineOnly;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel lblScanning;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
+        private System.Windows.Forms.ToolStripProgressBar pgInfo;
     }
 }
 
