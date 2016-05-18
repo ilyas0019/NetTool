@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashboard));
             this.lblSoftware = new System.Windows.Forms.Label();
-            this.lstSoftware = new System.Windows.Forms.ListBox();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.lstNetworkDevices = new System.Windows.Forms.ListView();
             this.lstIPAddress = new System.Windows.Forms.ListBox();
@@ -59,8 +58,8 @@
             this.scanOnlineOnly = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblScanning = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.pgInfo = new System.Windows.Forms.ToolStripProgressBar();
+            this.lstSoftware = new System.Windows.Forms.ListView();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -69,20 +68,12 @@
             // lblSoftware
             // 
             this.lblSoftware.AutoSize = true;
-            this.lblSoftware.Location = new System.Drawing.Point(706, 36);
+            this.lblSoftware.Location = new System.Drawing.Point(706, 56);
             this.lblSoftware.Name = "lblSoftware";
             this.lblSoftware.Size = new System.Drawing.Size(25, 13);
             this.lblSoftware.TabIndex = 15;
             this.lblSoftware.Text = "Info";
             this.lblSoftware.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lstSoftware
-            // 
-            this.lstSoftware.FormattingEnabled = true;
-            this.lstSoftware.Location = new System.Drawing.Point(703, 56);
-            this.lstSoftware.Name = "lstSoftware";
-            this.lstSoftware.Size = new System.Drawing.Size(524, 277);
-            this.lstSoftware.TabIndex = 14;
             // 
             // imgList
             // 
@@ -132,8 +123,10 @@
             // lstView
             // 
             this.lstView.Location = new System.Drawing.Point(14, 127);
+            this.lstView.MultiSelect = false;
             this.lstView.Name = "lstView";
             this.lstView.Size = new System.Drawing.Size(683, 329);
+            this.lstView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lstView.TabIndex = 24;
             this.lstView.UseCompatibleStateImageBehavior = false;
             this.lstView.View = System.Windows.Forms.View.Details;
@@ -209,7 +202,7 @@
             this.toolStripSeparator4});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1240, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1249, 25);
             this.toolStrip1.TabIndex = 32;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -272,7 +265,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1240, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1249, 24);
             this.menuStrip1.TabIndex = 33;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -304,11 +297,10 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblScanning,
-            this.toolStripSplitButton1,
             this.pgInfo});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 635);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 675);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1240, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1249, 22);
             this.statusStrip1.TabIndex = 34;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -318,26 +310,29 @@
             this.lblScanning.Size = new System.Drawing.Size(65, 17);
             this.lblScanning.Text = "Scanning...";
             // 
-            // toolStripSplitButton1
-            // 
-            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
-            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(32, 20);
-            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
-            // 
             // pgInfo
             // 
             this.pgInfo.Name = "pgInfo";
             this.pgInfo.Size = new System.Drawing.Size(1000, 16);
+            // 
+            // lstSoftware
+            // 
+            this.lstSoftware.Location = new System.Drawing.Point(703, 74);
+            this.lstSoftware.MultiSelect = false;
+            this.lstSoftware.Name = "lstSoftware";
+            this.lstSoftware.Size = new System.Drawing.Size(524, 265);
+            this.lstSoftware.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.lstSoftware.TabIndex = 35;
+            this.lstSoftware.UseCompatibleStateImageBehavior = false;
+            this.lstSoftware.View = System.Windows.Forms.View.Details;
             // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1240, 657);
+            this.ClientSize = new System.Drawing.Size(1249, 697);
+            this.Controls.Add(this.lstSoftware);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.chkOnline);
             this.Controls.Add(this.toolStrip1);
@@ -353,7 +348,6 @@
             this.Controls.Add(this.lstIPAddress);
             this.Controls.Add(this.lstNetworkDevices);
             this.Controls.Add(this.lblSoftware);
-            this.Controls.Add(this.lstSoftware);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Dashboard";
@@ -374,7 +368,6 @@
         #endregion
 
         private System.Windows.Forms.Label lblSoftware;
-        private System.Windows.Forms.ListBox lstSoftware;
         private System.Windows.Forms.ImageList imgList;
         private System.Windows.Forms.ListView lstNetworkDevices;
         private System.Windows.Forms.ListBox lstIPAddress;
@@ -402,8 +395,8 @@
         private System.Windows.Forms.ToolStripMenuItem scanOnlineOnly;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblScanning;
-        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripProgressBar pgInfo;
+        private System.Windows.Forms.ListView lstSoftware;
     }
 }
 

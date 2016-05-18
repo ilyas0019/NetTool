@@ -22,7 +22,7 @@ namespace NTTool.Models
 
         public string Publisher { get; set; }
 
-        public string Size { get; set; }
+        public string EstimatedSize { get; set; }
 
         public string SystemComponent { get; set; }
 

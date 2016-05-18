@@ -34,7 +34,9 @@ namespace NTTool.Core
                 // Read Value from Registry Sub Key
                 string softwareName;
                 string displayVersion;
-
+                string installDate;
+                string publisher;
+                string estimatedSize;
                 programs = new List<SoftwareEntity>();
 
                 foreach (string subKeyName in regKey.GetSubKeyNames())
@@ -45,10 +47,15 @@ namespace NTTool.Core
                     // Read Value from Registry Sub Key
                     softwareName = (string)subKey.GetValue("DisplayName");
                     displayVersion = (string)subKey.GetValue("DisplayVersion");
+                    installDate = (string)subKey.GetValue("InstallDate");
+                    publisher = (string)subKey.GetValue("Publisher");
+                    estimatedSize = subKey.GetValue("EstimatedSize")==null ? "NA" : subKey.GetValue("EstimatedSize").ToString();
 
                     if (!string.IsNullOrEmpty(softwareName))
                     {
-                        programs.Add(new SoftwareEntity { DisplayName = softwareName, DisplayVersion = displayVersion });
+                        programs.Add(new SoftwareEntity { DisplayName = softwareName, 
+                            DisplayVersion = displayVersion, 
+                            Publisher = publisher, InstallDate = installDate, EstimatedSize=estimatedSize });
                     }
                 }
             }
@@ -78,28 +85,16 @@ namespace NTTool.Core
 
                 var networkDevices = GetNetworkDevices(scope);
 
-                objMachine.IPAddresses = ipaddresses;
-
-                objMachine.MachineMACAddress = GetMACAddress(scope);
-
-                objMachine.ListOfNetworkDevices = networkDevices;
-
-                //objMachine= GetLoggedOnUserInfo(machine, domain, objMachine);
-
-                SelectQuery query = new SelectQuery("SELECT * FROM Win32_OperatingSystem");
-
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-
-
-                foreach (ManagementObject m in searcher.Get())
+                if (ipaddresses.Length > 0)
                 {
-                    objMachine.MachineName = m["csname"].ToString();
-                    objMachine.OpratingSystem = m["Caption"].ToString();
-                    objMachine.OpratingSystemVersion = m["Version"].ToString();
-                    objMachine.SystemDirectory = m["WindowsDirectory"].ToString();
-                    objMachine.Manufacturer = m["Manufacturer"].ToString();
+                    objMachine.IPAddress = ipaddresses[0];
                 }
 
+                objMachine.IPAddresses = ipaddresses;
+
+                objMachine.MachineMACAddress = GetDefaultMACAddress(scope);
+
+                objMachine.ListOfNetworkDevices = networkDevices;
 
             }
 
@@ -178,7 +173,7 @@ namespace NTTool.Core
 
         }
 
-        private string GetMACAddress(ManagementScope scope)
+        private string GetDefaultMACAddress(ManagementScope scope)
         {
             SelectQuery query = new SelectQuery("Select * FROM Win32_NetworkAdapterConfiguration");
             ManagementObjectSearcher objMOS = new ManagementObjectSearcher(scope, query);

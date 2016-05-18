@@ -15,12 +15,12 @@ using System.Security.Principal;
 
 namespace Dashboard
 {
-    
+
     public delegate List<MachineEntity> FillNetoworkMachineList(string domain, bool onLineMachine);
 
     public partial class Dashboard : Form
     {
-        
+
 
         public List<MachineEntity> ListOfMachines { get; set; }
         public List<NetworkDevices> ListOfNetworkDevices { get; set; }
@@ -44,7 +44,7 @@ namespace Dashboard
             ResetPager(0);
             try
             {
-               FillListOfMachines();
+                FillListOfMachines();
             }
             catch (Exception ex)
             {
@@ -65,24 +65,23 @@ namespace Dashboard
             lstNetworkDevices.Items.Clear();
             lstStorage.Items.Clear();
             lstIPAddress.DataSource = null;
-            lstSoftware.DataSource = null;
+            lstSoftware.Items.Clear();
 
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
             ResetPager(0);
-            if (txtFilter.Text.ToUpper().Trim() != "")
+
+            if (ListOfMachines != null)
             {
-
-                FillListOfMachines(txtFilter.Text.ToUpper());
-
+                PopulateListView(SearchMachine(txtFilter.Text.ToUpper()));
             }
             else
             {
-                ResetPager(0);
-                MessageBox.Show("Please enter machine name");
+                MessageBox.Show("Please scan your network first");
             }
+
         }
 
         private void lstView_Click(object sender, EventArgs e)
@@ -153,7 +152,7 @@ namespace Dashboard
                 lstView.Items.Clear();
                 lstView.FullRowSelect = true;
                 lstView.SmallImageList = imgList;
-                lstSoftware.DataSource = null;
+               
 
                 // Attach Subitems to the ListView
                 lstView.Columns.Clear();
@@ -164,14 +163,20 @@ namespace Dashboard
                 lstView.Columns.Add("Machine OS", 130, HorizontalAlignment.Left);
                 lstView.Columns.Add("OS Version", 70, HorizontalAlignment.Left);
                 lstView.Columns.Add("System Service Pack", 150, HorizontalAlignment.Left);
-
-
+                
 
                 lstNetworkDevices.Items.Clear();
                 lstNetworkDevices.FullRowSelect = true;
 
 
-                lstSoftware.DataSource = null;
+                lstSoftware.Columns.Clear();
+                lstSoftware.Columns.Add("Title", 150, HorizontalAlignment.Left);
+                lstSoftware.Columns.Add("Version", 50, HorizontalAlignment.Left);
+                lstSoftware.Columns.Add("Installation Date", 80, HorizontalAlignment.Left);
+                lstSoftware.Columns.Add("Publisher", 100, HorizontalAlignment.Left);
+                lstSoftware.Columns.Add("Size", 50, HorizontalAlignment.Left);
+
+                
 
                 // Attach Subitems to the ListView
                 lstNetworkDevices.Columns.Clear();
@@ -215,25 +220,37 @@ namespace Dashboard
             lblInfo.Text = "";
             lblScanning.Text = string.Format("Scanning stared at {0}", DateTime.Now);
 
-            ListOfMachines= GetNetworkMachineData(searchString);
+            ListOfMachines = GetNetworkMachineData(searchString);
 
             PopulateListView(ListOfMachines);
-            
+
             Cursor.Current = Cursors.Default;
             lblScanning.Text = string.Format(lblScanning.Text + "- Ended at {0}", DateTime.Now);
         }
 
         private List<MachineEntity> GetNetworkMachineData(string searchString = null)
         {
-            //FillNetoworkMachineList methodInvoker=new FillNetoworkMachineList(NetworkProvider.GetInstance().DomainNetworkComputers);
-            //IAsyncResult result= methodInvoker.BeginInvoke(SelectedDomain, chkOnline.Checked,null,null);
-            //listOfMachines= methodInvoker.EndInvoke(result);
-
             var listOfMachines = NetworkProvider.GetInstance().DomainNetworkComputers(SelectedDomain, chkOnline.Checked);
-           
+
             if (!string.IsNullOrEmpty(searchString))
             {
                 listOfMachines = listOfMachines.Where(x => x.MachineName.Contains(searchString)).ToList();
+            }
+
+            return listOfMachines;
+        }
+
+
+        private List<MachineEntity> SearchMachine(string searchString = null)
+        {
+            var listOfMachines = new List<MachineEntity>();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                listOfMachines = ListOfMachines.Where(x => x.MachineName.Contains(searchString)).ToList();
+            }
+            else
+            {
+                listOfMachines = ListOfMachines;
             }
 
             return listOfMachines;
@@ -243,7 +260,8 @@ namespace Dashboard
         {
             lstView.Items.Clear();
             lstView.FullRowSelect = true;
-            lstSoftware.DataSource = null;
+            lstSoftware.Items.Clear();
+
             int online = 0;
             MachineEntity objMachine = new MachineEntity();
 
@@ -253,6 +271,11 @@ namespace Dashboard
 
             foreach (var item in listOfMachines)
             {
+                if (Dns.GetHostName() == item.MachineName)
+                {
+                    MachineProvider.GetInstance().GetMachineAdditionalInformation(item.MachineName, SelectedDomain, item);
+                    item.MachineStatus = MachineStatus.Online;
+                }
 
                 objMachine = item;
 
@@ -294,8 +317,16 @@ namespace Dashboard
 
             var listOfSoftwares = MachineProvider.GetInstance().GetListOfInstalledSoftwares(SelectedMachineName);
 
-            lstSoftware.DataSource = listOfSoftwares;
-            lstSoftware.DisplayMember = "DisplayName";
+            foreach (var item in listOfSoftwares)
+            {
+                ListViewItem lvi = new ListViewItem(item.DisplayName);
+                lvi.SubItems.Add(item.DisplayVersion);
+                lvi.SubItems.Add(item.InstallDate);
+                lvi.SubItems.Add(item.Publisher);
+                lvi.SubItems.Add(item.EstimatedSize);
+                lstSoftware.Items.Add(lvi);
+            }
+            
             lblSoftware.Text = string.Format("{0} Software Installed on machine {1}", listOfSoftwares == null ? 0 : listOfSoftwares.Count, SelectedMachineName);
 
         }
@@ -339,6 +370,8 @@ namespace Dashboard
             chkOnline.Checked = true;
             ScanNetwork();
         }
+
+      
 
     }
 }
