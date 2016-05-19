@@ -49,7 +49,7 @@ namespace NTTool.Core
                     displayVersion = (string)subKey.GetValue("DisplayVersion");
                     installDate = (string)subKey.GetValue("InstallDate");
 
-                    if (string.IsNullOrEmpty(installDate))
+                    if (!string.IsNullOrEmpty(installDate))
                     {
                         DateTime startDate = new DateTime(1970, 1, 1, 0, 0, 0);
                         Int64 regVal = Convert.ToInt64(installDate);
@@ -57,7 +57,8 @@ namespace NTTool.Core
                     }
 
                     publisher = (string)subKey.GetValue("Publisher");
-                    estimatedSize = subKey.GetValue("EstimatedSize")==null ? "NA" : subKey.GetValue("EstimatedSize").ToString();
+
+                    estimatedSize = subKey.GetValue("EstimatedSize") == null ? "NA" : GetSize(subKey.GetValue("EstimatedSize").ToString());
 
                     if (!string.IsNullOrEmpty(softwareName))
                     {
@@ -73,6 +74,18 @@ namespace NTTool.Core
                 throw;
             }
             return programs;
+        }
+
+        private string GetSize(string estimatedSize)
+        {
+            if (!string.IsNullOrEmpty(estimatedSize))
+            {
+                return (double.Parse(estimatedSize) / 1024).ToString(".00");
+            }
+            else
+            {
+                return estimatedSize;
+            }
         }
 
         public MachineEntity GetMachineAdditionalInformation(string machine, string domain, MachineEntity objMachine)

@@ -175,7 +175,7 @@ namespace Dashboard
                 lstSoftware.Columns.Add("Version", 50, HorizontalAlignment.Left);
                 lstSoftware.Columns.Add("Installation Date", 80, HorizontalAlignment.Left);
                 lstSoftware.Columns.Add("Publisher", 100, HorizontalAlignment.Left);
-                lstSoftware.Columns.Add("Size", 50, HorizontalAlignment.Left);
+                lstSoftware.Columns.Add("Size(MB)", 50, HorizontalAlignment.Left);
 
                 
 

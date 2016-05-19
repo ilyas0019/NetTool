@@ -84,9 +84,9 @@
             // 
             // lstNetworkDevices
             // 
-            this.lstNetworkDevices.Location = new System.Drawing.Point(12, 485);
+            this.lstNetworkDevices.Location = new System.Drawing.Point(12, 514);
             this.lstNetworkDevices.Name = "lstNetworkDevices";
-            this.lstNetworkDevices.Size = new System.Drawing.Size(683, 124);
+            this.lstNetworkDevices.Size = new System.Drawing.Size(683, 95);
             this.lstNetworkDevices.TabIndex = 16;
             this.lstNetworkDevices.UseCompatibleStateImageBehavior = false;
             this.lstNetworkDevices.View = System.Windows.Forms.View.Details;
@@ -103,7 +103,7 @@
             // lblNetworkDevices
             // 
             this.lblNetworkDevices.AutoSize = true;
-            this.lblNetworkDevices.Location = new System.Drawing.Point(12, 459);
+            this.lblNetworkDevices.Location = new System.Drawing.Point(12, 498);
             this.lblNetworkDevices.Name = "lblNetworkDevices";
             this.lblNetworkDevices.Size = new System.Drawing.Size(25, 13);
             this.lblNetworkDevices.TabIndex = 18;
@@ -125,7 +125,7 @@
             this.lstView.Location = new System.Drawing.Point(14, 127);
             this.lstView.MultiSelect = false;
             this.lstView.Name = "lstView";
-            this.lstView.Size = new System.Drawing.Size(683, 329);
+            this.lstView.Size = new System.Drawing.Size(683, 364);
             this.lstView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lstView.TabIndex = 24;
             this.lstView.UseCompatibleStateImageBehavior = false;
@@ -157,7 +157,7 @@
             // 
             this.lstStorage.Location = new System.Drawing.Point(703, 366);
             this.lstStorage.Name = "lstStorage";
-            this.lstStorage.Size = new System.Drawing.Size(524, 116);
+            this.lstStorage.Size = new System.Drawing.Size(524, 125);
             this.lstStorage.TabIndex = 25;
             this.lstStorage.UseCompatibleStateImageBehavior = false;
             this.lstStorage.View = System.Windows.Forms.View.Details;
