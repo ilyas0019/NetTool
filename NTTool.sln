@@ -11,12 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTTool.Web", "NTTool.Web\NT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard", "Dashboard\Dashboard.csproj", "{94CC84EF-7C54-4CB3-99E1-F47787B7054C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HitnTrail", "HitnTrail\HitnTrail.csproj", "{89110AA7-2E1D-442A-AA19-4A06FAC1B8DE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListNetworkComputers", "..\HitnTrial\ListNetworkComputers_src\ListNetworkComputers\ListNetworkComputers.csproj", "{5746F2A7-F9A5-434A-BA65-EDC728368003}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostNIPAddr", "..\HitnTrial\Host_Info_within_Network_src\HostNIPAddr\HostNIPAddr\HostNIPAddr.csproj", "{4D412196-E6EE-4B6F-88CC-64C2A0B79712}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,18 +33,6 @@ Global
 		{94CC84EF-7C54-4CB3-99E1-F47787B7054C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94CC84EF-7C54-4CB3-99E1-F47787B7054C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94CC84EF-7C54-4CB3-99E1-F47787B7054C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89110AA7-2E1D-442A-AA19-4A06FAC1B8DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89110AA7-2E1D-442A-AA19-4A06FAC1B8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{89110AA7-2E1D-442A-AA19-4A06FAC1B8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89110AA7-2E1D-442A-AA19-4A06FAC1B8DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5746F2A7-F9A5-434A-BA65-EDC728368003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5746F2A7-F9A5-434A-BA65-EDC728368003}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5746F2A7-F9A5-434A-BA65-EDC728368003}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5746F2A7-F9A5-434A-BA65-EDC728368003}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D412196-E6EE-4B6F-88CC-64C2A0B79712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D412196-E6EE-4B6F-88CC-64C2A0B79712}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D412196-E6EE-4B6F-88CC-64C2A0B79712}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D412196-E6EE-4B6F-88CC-64C2A0B79712}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

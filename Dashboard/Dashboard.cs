@@ -26,6 +26,7 @@ namespace Dashboard
         public List<NetworkDevices> ListOfNetworkDevices { get; set; }
         public string SelectedDomain { get; set; }
         public string SelectedMachineName { get; set; }
+        public int Online { get; set; }
 
 
         public Dashboard()
@@ -240,7 +241,6 @@ namespace Dashboard
             return listOfMachines;
         }
 
-
         private List<MachineEntity> SearchMachine(string searchString = null)
         {
             var listOfMachines = new List<MachineEntity>();
@@ -262,45 +262,47 @@ namespace Dashboard
             lstView.FullRowSelect = true;
             lstSoftware.Items.Clear();
 
-            int online = 0;
+          
             MachineEntity objMachine = new MachineEntity();
 
             ResetPager(listOfMachines.Count);
-            var os = string.Empty;
-            var osVersion = string.Empty;
-
+            Online = 0;
             foreach (var item in listOfMachines)
             {
-                if (Dns.GetHostName() == item.MachineName)
-                {
-                    MachineProvider.GetInstance().GetMachineAdditionalInformation(item.MachineName, SelectedDomain, item);
-                    item.MachineStatus = MachineStatus.Online;
-                }
-
-                objMachine = item;
-
-                ListViewItem lvi = new ListViewItem(Enum.GetName(typeof(MachineStatus), item.MachineStatus));
-                lvi.SubItems.Add(objMachine.MachineName);
-                lvi.SubItems.Add(objMachine.IPAddress);
-                lvi.SubItems.Add(objMachine.MachineMACAddress);
-                lvi.SubItems.Add(objMachine.OpratingSystem);
-                lvi.SubItems.Add(objMachine.OpratingSystemVersion);
-                lvi.SubItems.Add(objMachine.OpratingSystemServicePack);
-                if (objMachine.MachineStatus == MachineStatus.Online)
-                {
-                    lvi.ImageIndex = 1;
-                    online++;
-                }
-                else
-                {
-                    lvi.ImageIndex = 0;
-                }
-
-                lstView.Items.Add(lvi);
-                pgInfo.Value++;
+                FillMachines(item);
             }
 
-            lblInfo.Text = string.Format("Total no of machines is '{0}' currently online '{1}'", listOfMachines.Count, online);
+            lblInfo.Text = string.Format("Total no of machines is '{0}' currently online '{1}'", listOfMachines.Count, Online);
+        }
+
+        private void FillMachines(MachineEntity item)
+        {
+         
+            if (Dns.GetHostName() == item.MachineName)
+            {
+                MachineProvider.GetInstance().GetMachineAdditionalInformation(item.MachineName, SelectedDomain, item);
+                item.MachineStatus = MachineStatus.Online;
+            }
+
+            ListViewItem lvi = new ListViewItem(Enum.GetName(typeof(MachineStatus), item.MachineStatus));
+            lvi.SubItems.Add(item.MachineName);
+            lvi.SubItems.Add(item.IPAddress);
+            lvi.SubItems.Add(item.MachineMACAddress);
+            lvi.SubItems.Add(item.OpratingSystem);
+            lvi.SubItems.Add(item.OpratingSystemVersion);
+            lvi.SubItems.Add(item.OpratingSystemServicePack);
+            if (item.MachineStatus == MachineStatus.Online)
+            {
+                lvi.ImageIndex = 1;
+                Online++;
+            }
+            else
+            {
+                lvi.ImageIndex = 0;
+            }
+
+            lstView.Items.Add(lvi);
+            pgInfo.Value++;
         }
 
         private void ResetPager(int maxValue)
@@ -371,7 +373,27 @@ namespace Dashboard
             ScanNetwork();
         }
 
-      
+        private void chkOnline_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (ListOfMachines == null)
+            {
+                MessageBox.Show("Please scan network first");
+                chkOnline.Checked = false;
+                return;
+            }
+
+
+            if (chkOnline.Checked)
+            {
+                var list = ListOfMachines.Where(x => x.MachineStatus == MachineStatus.Online).ToList();
+                PopulateListView(list);
+            }
+            else
+            {
+                PopulateListView(ListOfMachines);
+            }
+        }
 
     }
 }

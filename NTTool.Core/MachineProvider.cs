@@ -48,6 +48,14 @@ namespace NTTool.Core
                     softwareName = (string)subKey.GetValue("DisplayName");
                     displayVersion = (string)subKey.GetValue("DisplayVersion");
                     installDate = (string)subKey.GetValue("InstallDate");
+
+                    if (string.IsNullOrEmpty(installDate))
+                    {
+                        DateTime startDate = new DateTime(1970, 1, 1, 0, 0, 0);
+                        Int64 regVal = Convert.ToInt64(installDate);
+                        installDate = startDate.AddSeconds(regVal).ToString();
+                    }
+
                     publisher = (string)subKey.GetValue("Publisher");
                     estimatedSize = subKey.GetValue("EstimatedSize")==null ? "NA" : subKey.GetValue("EstimatedSize").ToString();
 

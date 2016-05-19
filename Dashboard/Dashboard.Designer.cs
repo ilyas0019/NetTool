@@ -141,6 +141,7 @@
             this.chkOnline.TabIndex = 23;
             this.chkOnline.Text = "Online Machines Only";
             this.chkOnline.UseVisualStyleBackColor = true;
+            this.chkOnline.Click += new System.EventHandler(this.chkOnline_CheckedChanged);
             // 
             // lblStorage
             // 
