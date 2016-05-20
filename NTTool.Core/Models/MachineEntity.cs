@@ -7,14 +7,15 @@ using System.Web;
 
 namespace NTTool.Models
 {
-    public class MachineEntity 
+    [Serializable()]
+    public class MachineEntity
     {
 
         public string LoggedInUser { get; set; }
 
         public string DomainName { get; set; }
 
-        public string  DNSHostName { get; set; }
+        public string DNSHostName { get; set; }
 
         public string MachineName { get; set; }
 
@@ -31,7 +32,7 @@ namespace NTTool.Models
         public string OpratingSystemVersion { get; set; }
 
         public string OpratingSystemServicePack { get; set; }
-        
+
         public string Manufacturer { get; set; }
 
         public string MachineMACAddress { get; set; }

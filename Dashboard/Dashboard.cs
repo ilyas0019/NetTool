@@ -12,6 +12,8 @@ using NTTool.Models;
 using NTTool.Core.Models;
 using System.Net;
 using System.Security.Principal;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Dashboard
 {
@@ -21,13 +23,11 @@ namespace Dashboard
     public partial class Dashboard : Form
     {
 
-
         public List<MachineEntity> ListOfMachines { get; set; }
         public List<NetworkDevices> ListOfNetworkDevices { get; set; }
         public string SelectedDomain { get; set; }
         public string SelectedMachineName { get; set; }
         public int Online { get; set; }
-
 
         public Dashboard()
         {
@@ -217,9 +217,7 @@ namespace Dashboard
             Cursor.Current = Cursors.WaitCursor;
 
             ClearForm();
-            lblSoftware.Text = "";
-            lblInfo.Text = "";
-            lblScanning.Text = string.Format("Scanning stared at {0}", DateTime.Now);
+          
 
             ListOfMachines = GetNetworkMachineData(searchString);
 
@@ -258,11 +256,14 @@ namespace Dashboard
 
         public void PopulateListView(List<MachineEntity> listOfMachines)
         {
+            lblSoftware.Text = "";
+            lblInfo.Text = "";
+            lblScanning.Text = string.Format("Scanning stared at {0}", DateTime.Now);
+
             lstView.Items.Clear();
             lstView.FullRowSelect = true;
             lstSoftware.Items.Clear();
-
-          
+                      
             MachineEntity objMachine = new MachineEntity();
 
             ResetPager(listOfMachines.Count);
@@ -395,5 +396,52 @@ namespace Dashboard
             }
         }
 
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void SaveResults()
+        {
+            var dataFilePath = Application.StartupPath +"\\";
+            var fileName = Guid.NewGuid().ToString() + "_" +DateTime.Now.Ticks.ToString() +".bin";
+
+            using (Stream stream = File.Open(dataFilePath+fileName, FileMode.Create))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                bin.Serialize(stream, ListOfMachines);
+            }
+
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveResults();
+        }
+
+        private void ReadResult(string fileName)
+        {
+
+            using (Stream stream = File.Open(fileName, FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+
+                ListOfMachines = (List<MachineEntity>)bin.Deserialize(stream);
+                ClearForm();
+                PopulateListView(ListOfMachines);
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            dlgOpen.InitialDirectory = Application.StartupPath;
+            dlgOpen.ShowDialog();
+            var fileName = dlgOpen.FileName;
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                ReadResult(fileName);
+            }
+        }
     }
 }

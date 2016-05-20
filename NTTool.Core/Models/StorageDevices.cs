@@ -5,6 +5,7 @@ using System.Text;
 
 namespace NTTool.Core.Models
 {
+    [Serializable()]
     public class StorageDevices
     {
         public string Caption { get; set; }

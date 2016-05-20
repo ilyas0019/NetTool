@@ -4,6 +4,7 @@ using NTTool.Models;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.Globalization;
 using System.Linq;
 using System.Management;
 using System.Security.Principal;
@@ -51,9 +52,8 @@ namespace NTTool.Core
 
                     if (!string.IsNullOrEmpty(installDate))
                     {
-                        DateTime startDate = new DateTime(1970, 1, 1, 0, 0, 0);
-                        Int64 regVal = Convert.ToInt64(installDate);
-                        installDate = startDate.AddSeconds(regVal).ToString();
+                        DateTime dt = DateTime.ParseExact(installDate, "yyyyMMdd", CultureInfo.InvariantCulture);
+                        installDate = dt.ToString("dd/MM/yyyy");
                     }
 
                     publisher = (string)subKey.GetValue("Publisher");

@@ -60,6 +60,11 @@
             this.lblScanning = new System.Windows.Forms.ToolStripStatusLabel();
             this.pgInfo = new System.Windows.Forms.ToolStripProgressBar();
             this.lstSoftware = new System.Windows.Forms.ListView();
+            this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -68,7 +73,7 @@
             // lblSoftware
             // 
             this.lblSoftware.AutoSize = true;
-            this.lblSoftware.Location = new System.Drawing.Point(706, 56);
+            this.lblSoftware.Location = new System.Drawing.Point(703, 89);
             this.lblSoftware.Name = "lblSoftware";
             this.lblSoftware.Size = new System.Drawing.Size(25, 13);
             this.lblSoftware.TabIndex = 15;
@@ -84,9 +89,9 @@
             // 
             // lstNetworkDevices
             // 
-            this.lstNetworkDevices.Location = new System.Drawing.Point(12, 514);
+            this.lstNetworkDevices.Location = new System.Drawing.Point(703, 444);
             this.lstNetworkDevices.Name = "lstNetworkDevices";
-            this.lstNetworkDevices.Size = new System.Drawing.Size(683, 95);
+            this.lstNetworkDevices.Size = new System.Drawing.Size(524, 102);
             this.lstNetworkDevices.TabIndex = 16;
             this.lstNetworkDevices.UseCompatibleStateImageBehavior = false;
             this.lstNetworkDevices.View = System.Windows.Forms.View.Details;
@@ -95,7 +100,7 @@
             // lstIPAddress
             // 
             this.lstIPAddress.FormattingEnabled = true;
-            this.lstIPAddress.Location = new System.Drawing.Point(704, 514);
+            this.lstIPAddress.Location = new System.Drawing.Point(704, 569);
             this.lstIPAddress.Name = "lstIPAddress";
             this.lstIPAddress.Size = new System.Drawing.Size(523, 95);
             this.lstIPAddress.TabIndex = 17;
@@ -103,7 +108,7 @@
             // lblNetworkDevices
             // 
             this.lblNetworkDevices.AutoSize = true;
-            this.lblNetworkDevices.Location = new System.Drawing.Point(12, 498);
+            this.lblNetworkDevices.Location = new System.Drawing.Point(703, 428);
             this.lblNetworkDevices.Name = "lblNetworkDevices";
             this.lblNetworkDevices.Size = new System.Drawing.Size(25, 13);
             this.lblNetworkDevices.TabIndex = 18;
@@ -113,7 +118,7 @@
             // lblIPAddresses
             // 
             this.lblIPAddresses.AutoSize = true;
-            this.lblIPAddresses.Location = new System.Drawing.Point(703, 494);
+            this.lblIPAddresses.Location = new System.Drawing.Point(703, 553);
             this.lblIPAddresses.Name = "lblIPAddresses";
             this.lblIPAddresses.Size = new System.Drawing.Size(25, 13);
             this.lblIPAddresses.TabIndex = 19;
@@ -122,10 +127,10 @@
             // 
             // lstView
             // 
-            this.lstView.Location = new System.Drawing.Point(14, 127);
+            this.lstView.Location = new System.Drawing.Point(14, 105);
             this.lstView.MultiSelect = false;
             this.lstView.Name = "lstView";
-            this.lstView.Size = new System.Drawing.Size(683, 364);
+            this.lstView.Size = new System.Drawing.Size(683, 559);
             this.lstView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lstView.TabIndex = 24;
             this.lstView.UseCompatibleStateImageBehavior = false;
@@ -146,7 +151,7 @@
             // lblStorage
             // 
             this.lblStorage.AutoSize = true;
-            this.lblStorage.Location = new System.Drawing.Point(702, 342);
+            this.lblStorage.Location = new System.Drawing.Point(702, 328);
             this.lblStorage.Name = "lblStorage";
             this.lblStorage.Size = new System.Drawing.Size(25, 13);
             this.lblStorage.TabIndex = 26;
@@ -155,9 +160,9 @@
             // 
             // lstStorage
             // 
-            this.lstStorage.Location = new System.Drawing.Point(703, 366);
+            this.lstStorage.Location = new System.Drawing.Point(703, 347);
             this.lstStorage.Name = "lstStorage";
-            this.lstStorage.Size = new System.Drawing.Size(524, 125);
+            this.lstStorage.Size = new System.Drawing.Size(524, 74);
             this.lstStorage.TabIndex = 25;
             this.lstStorage.UseCompatibleStateImageBehavior = false;
             this.lstStorage.View = System.Windows.Forms.View.Details;
@@ -165,7 +170,7 @@
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(12, 111);
+            this.lblInfo.Location = new System.Drawing.Point(12, 89);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(25, 13);
             this.lblInfo.TabIndex = 27;
@@ -187,7 +192,7 @@
             this.lstDomain.FormattingEnabled = true;
             this.lstDomain.Location = new System.Drawing.Point(14, 56);
             this.lstDomain.Name = "lstDomain";
-            this.lstDomain.Size = new System.Drawing.Size(363, 56);
+            this.lstDomain.Size = new System.Drawing.Size(363, 30);
             this.lstDomain.TabIndex = 28;
             // 
             // toolStrip1
@@ -203,7 +208,7 @@
             this.toolStripSeparator4});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1249, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1248, 25);
             this.toolStrip1.TabIndex = 32;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -263,10 +268,11 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem1,
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1249, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1248, 24);
             this.menuStrip1.TabIndex = 33;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -299,9 +305,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblScanning,
             this.pgInfo});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 675);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 674);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1249, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1248, 22);
             this.statusStrip1.TabIndex = 34;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -318,21 +324,56 @@
             // 
             // lstSoftware
             // 
-            this.lstSoftware.Location = new System.Drawing.Point(703, 74);
+            this.lstSoftware.Location = new System.Drawing.Point(703, 105);
             this.lstSoftware.MultiSelect = false;
             this.lstSoftware.Name = "lstSoftware";
-            this.lstSoftware.Size = new System.Drawing.Size(524, 265);
+            this.lstSoftware.Size = new System.Drawing.Size(524, 218);
             this.lstSoftware.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lstSoftware.TabIndex = 35;
             this.lstSoftware.UseCompatibleStateImageBehavior = false;
             this.lstSoftware.View = System.Windows.Forms.View.Details;
+            // 
+            // fileToolStripMenuItem1
+            // 
+            this.fileToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.openToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
+            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem1.Text = "File";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // dlgOpen
+            // 
+            this.dlgOpen.Filter = "NetworkTool Files|*.bin";
             // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1249, 697);
+            this.ClientSize = new System.Drawing.Size(1248, 696);
             this.Controls.Add(this.lstSoftware);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.chkOnline);
@@ -351,6 +392,7 @@
             this.Controls.Add(this.lblSoftware);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "Dashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Network Scanner";
@@ -398,6 +440,11 @@
         private System.Windows.Forms.ToolStripStatusLabel lblScanning;
         private System.Windows.Forms.ToolStripProgressBar pgInfo;
         private System.Windows.Forms.ListView lstSoftware;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog dlgOpen;
     }
 }
 

@@ -5,6 +5,7 @@ using System.Text;
 
 namespace NTTool.Core.Models
 {
+     [Serializable()] 
     public class NetworkDevices
     {
         public string DeviceID { get; set; }
