@@ -72,6 +72,12 @@ namespace Dashboard
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
+            FilterFill();
+
+        }
+
+        private void FilterFill()
+        {
             ResetPager(0);
 
             if (ListOfMachines != null)
@@ -82,7 +88,6 @@ namespace Dashboard
             {
                 MessageBox.Show("Please scan your network first");
             }
-
         }
 
         private void lstView_Click(object sender, EventArgs e)
@@ -149,11 +154,9 @@ namespace Dashboard
 
                 ClearForm();
 
-
                 lstView.Items.Clear();
                 lstView.FullRowSelect = true;
                 lstView.SmallImageList = imgList;
-               
 
                 // Attach Subitems to the ListView
                 lstView.Columns.Clear();
@@ -164,20 +167,16 @@ namespace Dashboard
                 lstView.Columns.Add("Machine OS", 130, HorizontalAlignment.Left);
                 lstView.Columns.Add("OS Version", 70, HorizontalAlignment.Left);
                 lstView.Columns.Add("System Service Pack", 150, HorizontalAlignment.Left);
-                
 
                 lstNetworkDevices.Items.Clear();
                 lstNetworkDevices.FullRowSelect = true;
-
 
                 lstSoftware.Columns.Clear();
                 lstSoftware.Columns.Add("Title", 150, HorizontalAlignment.Left);
                 lstSoftware.Columns.Add("Version", 50, HorizontalAlignment.Left);
                 lstSoftware.Columns.Add("Installation Date", 80, HorizontalAlignment.Left);
                 lstSoftware.Columns.Add("Publisher", 100, HorizontalAlignment.Left);
-                lstSoftware.Columns.Add("Size(MB)", 50, HorizontalAlignment.Left);
-
-                
+                lstSoftware.Columns.Add("Size(MB)", 50, HorizontalAlignment.Right);
 
                 // Attach Subitems to the ListView
                 lstNetworkDevices.Columns.Clear();
@@ -190,7 +189,7 @@ namespace Dashboard
                 lstStorage.Columns.Clear();
                 lstStorage.Columns.Add("Name", 50, HorizontalAlignment.Left);
                 lstStorage.Columns.Add("Serial Number", 100, HorizontalAlignment.Left);
-                lstStorage.Columns.Add("Free Space(GB)", 150, HorizontalAlignment.Left);
+                lstStorage.Columns.Add("Free Space(GB)", 150, HorizontalAlignment.Right);
 
                 PopulateDomain();
             }
@@ -441,6 +440,14 @@ namespace Dashboard
             if (!string.IsNullOrEmpty(fileName))
             {
                 ReadResult(fileName);
+            }
+        }
+
+        private void txtFilter_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                FilterFill();
             }
         }
     }
