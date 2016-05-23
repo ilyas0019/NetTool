@@ -89,9 +89,10 @@
             // 
             // lstNetworkDevices
             // 
+            this.lstNetworkDevices.GridLines = true;
             this.lstNetworkDevices.Location = new System.Drawing.Point(703, 444);
             this.lstNetworkDevices.Name = "lstNetworkDevices";
-            this.lstNetworkDevices.Size = new System.Drawing.Size(524, 102);
+            this.lstNetworkDevices.Size = new System.Drawing.Size(524, 119);
             this.lstNetworkDevices.TabIndex = 16;
             this.lstNetworkDevices.UseCompatibleStateImageBehavior = false;
             this.lstNetworkDevices.View = System.Windows.Forms.View.Details;
@@ -100,15 +101,15 @@
             // lstIPAddress
             // 
             this.lstIPAddress.FormattingEnabled = true;
-            this.lstIPAddress.Location = new System.Drawing.Point(704, 569);
+            this.lstIPAddress.Location = new System.Drawing.Point(704, 582);
             this.lstIPAddress.Name = "lstIPAddress";
-            this.lstIPAddress.Size = new System.Drawing.Size(523, 95);
+            this.lstIPAddress.Size = new System.Drawing.Size(523, 82);
             this.lstIPAddress.TabIndex = 17;
             // 
             // lblNetworkDevices
             // 
             this.lblNetworkDevices.AutoSize = true;
-            this.lblNetworkDevices.Location = new System.Drawing.Point(703, 428);
+            this.lblNetworkDevices.Location = new System.Drawing.Point(703, 430);
             this.lblNetworkDevices.Name = "lblNetworkDevices";
             this.lblNetworkDevices.Size = new System.Drawing.Size(25, 13);
             this.lblNetworkDevices.TabIndex = 18;
@@ -118,7 +119,7 @@
             // lblIPAddresses
             // 
             this.lblIPAddresses.AutoSize = true;
-            this.lblIPAddresses.Location = new System.Drawing.Point(703, 553);
+            this.lblIPAddresses.Location = new System.Drawing.Point(703, 566);
             this.lblIPAddresses.Name = "lblIPAddresses";
             this.lblIPAddresses.Size = new System.Drawing.Size(25, 13);
             this.lblIPAddresses.TabIndex = 19;
@@ -127,6 +128,7 @@
             // 
             // lstView
             // 
+            this.lstView.GridLines = true;
             this.lstView.Location = new System.Drawing.Point(14, 105);
             this.lstView.MultiSelect = false;
             this.lstView.Name = "lstView";
@@ -151,7 +153,7 @@
             // lblStorage
             // 
             this.lblStorage.AutoSize = true;
-            this.lblStorage.Location = new System.Drawing.Point(702, 328);
+            this.lblStorage.Location = new System.Drawing.Point(702, 325);
             this.lblStorage.Name = "lblStorage";
             this.lblStorage.Size = new System.Drawing.Size(25, 13);
             this.lblStorage.TabIndex = 26;
@@ -160,9 +162,9 @@
             // 
             // lstStorage
             // 
-            this.lstStorage.Location = new System.Drawing.Point(703, 347);
+            this.lstStorage.Location = new System.Drawing.Point(703, 341);
             this.lstStorage.Name = "lstStorage";
-            this.lstStorage.Size = new System.Drawing.Size(524, 74);
+            this.lstStorage.Size = new System.Drawing.Size(524, 86);
             this.lstStorage.TabIndex = 25;
             this.lstStorage.UseCompatibleStateImageBehavior = false;
             this.lstStorage.View = System.Windows.Forms.View.Details;
@@ -356,6 +358,7 @@
             // 
             // lstSoftware
             // 
+            this.lstSoftware.GridLines = true;
             this.lstSoftware.Location = new System.Drawing.Point(703, 105);
             this.lstSoftware.MultiSelect = false;
             this.lstSoftware.Name = "lstSoftware";
