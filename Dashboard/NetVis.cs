@@ -20,7 +20,7 @@ namespace Dashboard
 
     public delegate List<MachineEntity> FillNetoworkMachineList(string domain, bool onLineMachine);
 
-    public partial class Dashboard : Form
+    public partial class NetVis : Form
     {
 
         public List<MachineEntity> ListOfMachines { get; set; }
@@ -29,7 +29,7 @@ namespace Dashboard
         public string SelectedMachineName { get; set; }
         public int Online { get; set; }
 
-        public Dashboard()
+        public NetVis()
         {
             InitializeComponent();
         }
@@ -450,5 +450,12 @@ namespace Dashboard
                 FilterFill();
             }
         }
+
+        private void lstDomain_Click(object sender, EventArgs e)
+        {
+            SelectedDomain = lstDomain.SelectedItem.ToString();
+        }
+
+        
     }
 }

@@ -42,8 +42,6 @@ namespace NTTool.Tests
             var machineInfo = network.NetworkComputers();
             Assert.IsTrue(machineInfo.Count>0);
         }
-
-
     }
 
     public class MockMachineProivder : IMachineProvider

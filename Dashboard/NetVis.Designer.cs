@@ -1,6 +1,6 @@
 ﻿namespace Dashboard
 {
-    partial class Dashboard
+    partial class NetVis
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashboard));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NetVis));
             this.lblSoftware = new System.Windows.Forms.Label();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.lstNetworkDevices = new System.Windows.Forms.ListView();
@@ -196,6 +196,7 @@
             this.lstDomain.Name = "lstDomain";
             this.lstDomain.Size = new System.Drawing.Size(363, 30);
             this.lstDomain.TabIndex = 28;
+            this.lstDomain.Click += new System.EventHandler(this.lstDomain_Click);
             // 
             // toolStrip1
             // 
@@ -240,7 +241,7 @@
             // btnFilter
             // 
             this.btnFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnFilter.Image = global::Dashboard.Properties.Resources.find;
+            this.btnFilter.Image = global::NetVis.Properties.Resources.find;
             this.btnFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(23, 22);
@@ -256,7 +257,7 @@
             // btnList
             // 
             this.btnList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnList.Image = global::Dashboard.Properties.Resources.Search_computer;
+            this.btnList.Image = global::NetVis.Properties.Resources.Search_computer;
             this.btnList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnList.Name = "btnList";
             this.btnList.Size = new System.Drawing.Size(23, 22);
@@ -372,7 +373,7 @@
             // 
             this.dlgOpen.Filter = "NetworkTool Files|*.bin";
             // 
-            // Dashboard
+            // NetVis
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -397,9 +398,9 @@
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.Name = "Dashboard";
+            this.Name = "NetVis";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Network Scanner";
+            this.Text = "Network Visualizer";
             this.Load += new System.EventHandler(this.Dashboard_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="Dashboard.exe" version="1.0.0.29" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="NetVis.exe" version="1.0.0.29" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Dashboard" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
-    <commandLine file="Dashboard.exe" parameters="" />
+    <assemblyIdentity name="NetVis" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="NetVis.exe" parameters="" />
   </entryPoint>
   <trustInfo>
     <security>
@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dashboard.exe" size="38400">
-      <assemblyIdentity name="Dashboard" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NetVis.exe" size="38912">
+      <assemblyIdentity name="NetVis" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>elGs8ZFODNEUU5Sx50lRavZWh95teZoenXo3nsDPaqE=</dsig:DigestValue>
+        <dsig:DigestValue>LzTq2Kt8EjBzsPt3L7SMUqX47a5C8ankqaIZdk4+ALo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -61,11 +61,11 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>eBztTPAgZXFpTDxbi7tGBDX7vuApkaJIvpdAfHNUvrY=</dsig:DigestValue>
+        <dsig:DigestValue>qjj3EF+bPUHPkcCvhyDPahy4UsuVRELqUN+6bELuaSs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Dashboard.exe.config" size="187">
+  <file name="NetVis.exe.config" size="187">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTTool.Core", "NTTool.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTTool.Web", "NTTool.Web\NTTool.Web.csproj", "{B131AC46-61DC-401F-B6F6-535DBE796E76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard", "Dashboard\Dashboard.csproj", "{94CC84EF-7C54-4CB3-99E1-F47787B7054C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetVis", "Dashboard\NetVis.csproj", "{94CC84EF-7C54-4CB3-99E1-F47787B7054C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
