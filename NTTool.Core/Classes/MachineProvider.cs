@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 using NTTool.Core.Models;
-using NTTool.Models;
+using NTTool.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -11,7 +11,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NTTool.Core
+namespace NTTool.Core.Classes
 {
     public class MachineProvider : IMachineProvider
     {

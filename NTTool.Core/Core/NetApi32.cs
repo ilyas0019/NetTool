@@ -3,12 +3,12 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
-using NTTool.Models;
+using NTTool.Core.Models;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
-namespace NTTool.Core
+namespace NTTool.Core.Classes
 {
     /// <summary>
     /// Summary description for NTTool.Core.

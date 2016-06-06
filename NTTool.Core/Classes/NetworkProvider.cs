@@ -1,4 +1,4 @@
-﻿using NTTool.Models;
+﻿using NTTool.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -12,11 +12,11 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using NTTool.Core.Models;
 using System.Security.Principal;
 using System.Diagnostics;
+using NTTool.Core.Interfaces;
 
-namespace NTTool.Core
+namespace NTTool.Core.Classes
 {
     public class NetworkProvider : INetworkProvider
     {

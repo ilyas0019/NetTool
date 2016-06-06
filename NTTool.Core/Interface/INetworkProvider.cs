@@ -1,4 +1,4 @@
-﻿using NTTool.Models;
+﻿using NTTool.Core.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NTTool.Core
+namespace NTTool.Core.Interfaces
 {
     public interface INetworkProvider
     {

@@ -8,14 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NTTool.Core;
-using NTTool.Models;
 using NTTool.Core.Models;
 using System.Net;
 using System.Security.Principal;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using NTTool.Core.Interfaces;
+using NTTool.Core.Classes;
 
-namespace Dashboard
+namespace NTTool
 {
 
     public delegate List<MachineEntity> FillNetoworkMachineList(string domain, bool onLineMachine);
@@ -109,8 +110,6 @@ namespace Dashboard
                 {
                     MessageBox.Show("Please login as domain admin to see other system details");
                 }
-
-
 
             }
             catch (Exception ex)
@@ -382,8 +381,7 @@ namespace Dashboard
                 chkOnline.Checked = false;
                 return;
             }
-
-
+            
             if (chkOnline.Checked)
             {
                 var list = ListOfMachines.Where(x => x.MachineStatus == MachineStatus.Online).ToList();
@@ -402,13 +400,20 @@ namespace Dashboard
 
         private void SaveResults()
         {
-            var dataFilePath = Application.StartupPath +"\\";
-            var fileName = Guid.NewGuid().ToString() + "_" +DateTime.Now.Ticks.ToString() +".bin";
-
-            using (Stream stream = File.Open(dataFilePath+fileName, FileMode.Create))
+            if (ListOfMachines != null)
             {
-                BinaryFormatter bin = new BinaryFormatter();
-                bin.Serialize(stream, ListOfMachines);
+                var dataFilePath = Application.StartupPath + "\\";
+                var fileName = Guid.NewGuid().ToString() + "_" + DateTime.Now.Ticks.ToString() + ".bin";
+                
+                using (Stream stream = File.Open(dataFilePath + fileName, FileMode.Create))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    bin.Serialize(stream, ListOfMachines);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No machine are listed.");
             }
 
         }
@@ -454,6 +459,14 @@ namespace Dashboard
         private void lstDomain_Click(object sender, EventArgs e)
         {
             SelectedDomain = lstDomain.SelectedItem.ToString();
+        }
+              
+
+        private void wakeUpSelectedMachine_Click(object sender, EventArgs e)
+        {
+            var objWakeU = new WakeUp();
+            var objMachine = ListOfMachines.Where(x => x.MachineName == SelectedMachineName).FirstOrDefault();
+            objWakeU.WakeFunction(objMachine.MachineMACAddress.Replace(":","-").Replace("-",""));
         }
 
         

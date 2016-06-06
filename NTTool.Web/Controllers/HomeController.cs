@@ -1,4 +1,6 @@
 ﻿using NTTool.Core;
+using NTTool.Core.Classes;
+using NTTool.Core.Models;
 using NTTool.Models;
 using System;
 using System.Collections.Generic;

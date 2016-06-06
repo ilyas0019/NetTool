@@ -6,8 +6,9 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using NTTool.Core.Interfaces;
 
-namespace NTTool.Core
+namespace NTTool.Core.Classes
 {
     public class DomainProvider : IDomainProvider
     {

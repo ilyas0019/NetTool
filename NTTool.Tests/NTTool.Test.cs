@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NTTool.Core;
-using NTTool.Models;
+using NTTool.Core.Interfaces;
+using NTTool.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,10 +47,10 @@ namespace NTTool.Tests
     public class MockMachineProivder : IMachineProvider
     {
 
-        public List<Models.SoftwareEntity> GetListOfInstalledSoftwares(string machineName)
+        public List<NTTool.Core.Models.SoftwareEntity> GetListOfInstalledSoftwares(string machineName)
         {
-            var objList = new List<Models.SoftwareEntity>();
-            objList.Add(new Models.SoftwareEntity { DisplayName = "Test" });
+            var objList = new List<NTTool.Core.Models.SoftwareEntity>();
+            objList.Add(new NTTool.Core.Models.SoftwareEntity { DisplayName = "Test" });
             return objList;
         }
 
@@ -77,14 +77,14 @@ namespace NTTool.Tests
             return obj;
         }
 
-        public List<Models.MachineEntity> DomainNetworkComputers(string domainName)
+        public List<NTTool.Core.Models.MachineEntity> DomainNetworkComputers(string domainName)
         {
-            var objList = new List<Models.MachineEntity>();
-            objList.Add(new Models.MachineEntity { DomainName = "Domain", OpratingSystem = "Windows" });
+            var objList = new List<NTTool.Core.Models.MachineEntity>();
+            objList.Add(new NTTool.Core.Models.MachineEntity { DomainName = "Domain", OpratingSystem = "Windows" });
             return objList;
         }
 
-        public Models.MachineEntity GetMachineAdditionalInformation(string machine, string domain, Models.MachineEntity objMachine)
+        public NTTool.Core.Models.MachineEntity GetMachineAdditionalInformation(string machine, string domain, NTTool.Core.Models.MachineEntity objMachine)
         {
             objMachine.DomainName = "Domain";
             objMachine.OpratingSystem = "Windows";
@@ -96,8 +96,8 @@ namespace NTTool.Tests
         public List<MachineEntity> NetworkComputers()
         {
 
-            var objList = new List<Models.MachineEntity>();
-            objList.Add(new Models.MachineEntity { DomainName = "Domain", OpratingSystem = "Windows" });
+            var objList = new List<NTTool.Core.Models.MachineEntity>();
+            objList.Add(new NTTool.Core.Models.MachineEntity { DomainName = "Domain", OpratingSystem = "Windows" });
             return objList;
         }
 

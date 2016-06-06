@@ -1,4 +1,4 @@
-﻿namespace Dashboard
+﻿namespace NTTool
 {
     partial class NetVis
     {
@@ -60,6 +60,8 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scanNetworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scanOnlineOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.wakeUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wakeUpSelectedMachine = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblScanning = new System.Windows.Forms.ToolStripStatusLabel();
             this.pgInfo = new System.Windows.Forms.ToolStripProgressBar();
@@ -273,7 +275,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem1,
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.wakeUpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1248, 24);
@@ -334,6 +337,21 @@
             this.scanOnlineOnly.Text = "Scan Online Only";
             this.scanOnlineOnly.ToolTipText = "Scan Online Only";
             this.scanOnlineOnly.Click += new System.EventHandler(this.scanOnlineOnly_Click);
+            // 
+            // wakeUpToolStripMenuItem
+            // 
+            this.wakeUpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.wakeUpSelectedMachine});
+            this.wakeUpToolStripMenuItem.Name = "wakeUpToolStripMenuItem";
+            this.wakeUpToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.wakeUpToolStripMenuItem.Text = "WakeUp";
+            // 
+            // wakeUpSelectedMachine
+            // 
+            this.wakeUpSelectedMachine.Name = "wakeUpSelectedMachine";
+            this.wakeUpSelectedMachine.Size = new System.Drawing.Size(167, 22);
+            this.wakeUpSelectedMachine.Text = "Selected Machine";
+            this.wakeUpSelectedMachine.Click += new System.EventHandler(this.wakeUpSelectedMachine_Click);
             // 
             // statusStrip1
             // 
@@ -450,6 +468,8 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
+        private System.Windows.Forms.ToolStripMenuItem wakeUpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wakeUpSelectedMachine;
     }
 }
 

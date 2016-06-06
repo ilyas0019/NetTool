@@ -1,11 +1,10 @@
-﻿using NTTool.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 using System.Web;
 
-namespace NTTool.Models
+namespace NTTool.Core.Models
 {
     [Serializable()]
     public class MachineEntity

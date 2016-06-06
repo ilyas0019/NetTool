@@ -1,5 +1,4 @@
 D:\Projects\NetTool\Dashboard\obj\Debug\NetVis.csprojResolveAssemblyReference.cache
-D:\Projects\NetTool\Dashboard\obj\Debug\Dashboard.NetVis.resources
 D:\Projects\NetTool\Dashboard\obj\Debug\NetVis.Properties.Resources.resources
 D:\Projects\NetTool\Dashboard\obj\Debug\NetVis.csproj.GenerateResource.Cache
 D:\Projects\NetTool\Dashboard\bin\Debug\NetVis.exe.config
@@ -13,3 +12,4 @@ D:\Projects\NetTool\Dashboard\obj\Debug\NetVis.exe.manifest
 D:\Projects\NetTool\Dashboard\obj\Debug\NetVis.application
 D:\Projects\NetTool\Dashboard\obj\Debug\NetVis.exe
 D:\Projects\NetTool\Dashboard\obj\Debug\NetVis.pdb
+D:\Projects\NetTool\Dashboard\obj\Debug\NTTool.NetVis.resources
